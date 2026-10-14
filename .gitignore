@@ -1,0 +1,12 @@
+node_modules/
+.turbo/
+coverage/
+dist/
+*.tsbuildinfo
+.DS_Store
+*.pem
+.env
+.env*.local
+.claude/settings.local.json
+
+# apps keep their own ignores (apps/web/.gitignore, apps/mobile/.gitignore)

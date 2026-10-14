@@ -1,0 +1,47 @@
+{
+  "name": "keoshaa-app",
+  "private": true,
+  "description": "Keoshaa web (Next.js) and mobile (Expo) apps with shared TypeScript packages",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "npm@11.9.0",
+  "scripts": {
+    "dev:web": "turbo run dev --filter=@keoshaa/web",
+    "dev:mobile": "npm --workspace @keoshaa/mobile run start",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "api:fetch": "npm --workspace @keoshaa/api-client run fetch",
+    "api:generate": "npm --workspace @keoshaa/api-client run generate",
+    "verify": "npm run format:check && turbo run typecheck lint test build",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.0",
+    "prettier": "^3.9.10",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "turbo": "^2.11.8",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs,json,md,css,yml,yaml}": "prettier --write"
+  },
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
+  }
+}

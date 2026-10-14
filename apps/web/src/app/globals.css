@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Design tokens from @keoshaa/tokens (kept in step by src/lib/tokens.test.ts). */
+@theme {
+  --color-brand: #1d4ed8;
+  --color-brand-on: #ffffff;
+  --color-text: #111827;
+  --color-text-muted: #4b5563;
+  --color-background: #ffffff;
+  --color-surface: #f3f4f6;
+  --color-border: #e5e7eb;
+  --color-success: #15803d;
+  --color-warning: #b45309;
+  --color-danger: #b91c1c;
+  --font-sans:
+    "Noto Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans Devanagari",
+    sans-serif;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}

@@ -1,0 +1,11 @@
+node_modules
+.next
+.expo
+.turbo
+dist
+coverage
+apps/mobile/ios
+apps/mobile/android
+packages/api-client/openapi.json
+packages/api-client/src/schema.ts
+package-lock.json
