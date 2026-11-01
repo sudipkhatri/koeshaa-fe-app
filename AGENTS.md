@@ -57,5 +57,5 @@ Each app has its own `AGENTS.md` from its framework (`apps/web/AGENTS.md`, `apps
 - Plan first for new features, new screens with server data, or work over ~3 files.
 - Ask when product requirements are ambiguous; do not invent screens or flows from incomplete specs.
 - Keep diffs small. Do not refactor unrelated code.
-- Skills: `frontend-standards`, `new-feature`, `update-api-client`. Subagents: `code-reviewer`, `test-writer`, `docs-writer`.
+- Skills: `frontend-standards`, `new-feature`, `update-api-client`. Subagents: `code-reviewer`, `test-writer`, `docs-writer`. The delivery agents (`planner`, `web-dev`, `mobile-dev`, `test-engineer`, `reviewer`, `release-engineer`) live in `../keoshaa-be/.claude/agents/` and follow this file when working here.
 - Code review: developers run `/review` (scored against the standards via `code-reviewer`). It is the only official review and is never run automatically.
