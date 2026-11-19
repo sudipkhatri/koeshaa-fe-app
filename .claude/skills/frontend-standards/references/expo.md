@@ -7,6 +7,8 @@ Expo SDK 57, React Native 0.86, Expo Router, New Architecture. **Before writing 
 - Add packages with `npx expo install <package>` (from `apps/mobile`) so versions match the SDK. Never plain `npm install` for anything with native code.
 - Prefer Expo modules (`expo-secure-store`, `expo-sqlite`, `expo-image`, `expo-crypto`) over third-party equivalents.
 - Run `npx expo-doctor` after dependency changes.
+- Styling uses NativeWind with the theme generated from `@keoshaa/tokens` (`styling.md`). Check NativeWind's supported Expo SDK before installing or upgrading either.
+- Fonts (Baloo 2, Latin and Devanagari) load once in the root layout with `expo-font`; screens never load fonts.
 
 ## Navigation
 

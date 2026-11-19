@@ -22,6 +22,34 @@ describe("createApiClient", () => {
     expect(fetch).toHaveBeenCalledOnce();
   });
 
+  it("passes a standard Response through unchanged on success", async () => {
+    const body = { success: true, data: { status: "ok" }, meta: {} };
+    const fetch = vi.fn(async () => envelope(200, body));
+    const client = createApiClient({ baseUrl: "http://api", getAccessToken: () => null, fetch });
+    const { data, response } = await client.GET("/health");
+    expect(data).toEqual(body);
+    expect(response.status).toBe(200);
+  });
+
+  it("accepts a response from a fetch polyfill whose Response is not the global one", async () => {
+    // React Native's fetch returns its own Response class; openapi-fetch rejects a "modified" one.
+    const foreign = (response: Response) =>
+      new Proxy(response, {
+        get: (target, key) => {
+          const value: unknown = Reflect.get(target, key, target);
+          if (typeof value !== "function") return value;
+          return (...args: unknown[]): unknown => Reflect.apply(value, target, args) as unknown;
+        },
+        getPrototypeOf: () => Object.prototype,
+      });
+    const fetch = vi.fn(async () =>
+      foreign(envelope(200, { success: true, data: { status: "ok" }, meta: {} })),
+    );
+    const client = createApiClient({ baseUrl: "http://api", getAccessToken: () => null, fetch });
+    const { data } = await client.GET("/health");
+    expect(data).toBeDefined();
+  });
+
   it("turns an error envelope into ApiError with the retry time", async () => {
     const fetch = vi.fn(async () =>
       envelope(

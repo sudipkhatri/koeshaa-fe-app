@@ -1,0 +1,104 @@
+/* Generated from @keoshaa/tokens by `npm run tokens:generate`. Do not edit. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-background: #F5F6FB;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #EEF0F8;
+  --color-text: #1B1F3B;
+  --color-text-muted: #5A6080;
+  --color-border: #E6E8F2;
+  --color-primary: #4F46E5;
+  --color-primary-pressed: #4338CA;
+  --color-on-primary: #FFFFFF;
+  --color-primary-tint: #E9E8FE;
+  --color-on-primary-tint: #4338CA;
+  --color-hero: #4F46E5;
+  --color-reward: #FFC83D;
+  --color-on-reward: #4A3500;
+  --color-reward-tint: #FFF0C2;
+  --color-on-reward-tint: #4A3500;
+  --color-success: #10B981;
+  --color-success-tint: #D9F6EA;
+  --color-on-success-tint: #065F46;
+  --color-danger: #F43F5E;
+  --color-danger-tint: #FFE4E8;
+  --color-on-danger-tint: #9F1239;
+  --color-danger-fill: #E11D48;
+  --color-on-danger-fill: #FFFFFF;
+  --color-sky-tint: #E0F2FE;
+  --color-on-sky-tint: #075985;
+  --color-grape-tint: #EDE8FE;
+  --color-on-grape-tint: #5B21B6;
+  --color-on-subject: #FFFFFF;
+  --color-mascot-eyes: #14173A;
+  --color-overlay: rgba(10, 16, 40, 0.5);
+  --color-video-from: #312E81;
+  --color-video-to: #4F46E5;
+  --color-subject-science: #047857;
+  --color-subject-maths: #4F46E5;
+  --color-subject-english: #C2410C;
+  --color-subject-nepali: #E11D48;
+  --color-subject-social: #0369A1;
+  --color-subject-health: #7C3AED;
+  --color-subject-text-science: #047857;
+  --color-subject-text-maths: #4338CA;
+  --color-subject-text-english: #C2410C;
+  --color-subject-text-nepali: #BE123C;
+  --color-subject-text-social: #0369A1;
+  --color-subject-text-health: #6D28D9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0F1222;
+    --color-surface: #1A1E35;
+    --color-surface-muted: #232845;
+    --color-text: #F1F2FF;
+    --color-text-muted: #A9AECB;
+    --color-border: #2B3050;
+    --color-primary: #818CF8;
+    --color-primary-pressed: #6F7BF0;
+    --color-on-primary: #12153A;
+    --color-primary-tint: #2A2E66;
+    --color-on-primary-tint: #A5B0FF;
+    --color-hero: #4338CA;
+    --color-reward: #FFC83D;
+    --color-on-reward: #4A3500;
+    --color-reward-tint: #4A3A0E;
+    --color-on-reward-tint: #FFDC80;
+    --color-success: #34D399;
+    --color-success-tint: #0F3D31;
+    --color-on-success-tint: #6EE7B7;
+    --color-danger: #FB7185;
+    --color-danger-tint: #4A1B2A;
+    --color-on-danger-tint: #FDA4AF;
+    --color-danger-fill: #FB7185;
+    --color-on-danger-fill: #4C0519;
+    --color-sky-tint: #0C3550;
+    --color-on-sky-tint: #7DD3FC;
+    --color-grape-tint: #35296E;
+    --color-on-grape-tint: #D4C8FF;
+    --color-on-subject: #FFFFFF;
+    --color-mascot-eyes: #14173A;
+    --color-overlay: rgba(10, 16, 40, 0.5);
+    --color-video-from: #312E81;
+    --color-video-to: #4F46E5;
+    --color-subject-science: #065F46;
+    --color-subject-maths: #4338CA;
+    --color-subject-english: #9A3412;
+    --color-subject-nepali: #BE123C;
+    --color-subject-social: #075985;
+    --color-subject-health: #6D28D9;
+    --color-subject-text-science: #6EE7B7;
+    --color-subject-text-maths: #A5B4FC;
+    --color-subject-text-english: #FDBA74;
+    --color-subject-text-nepali: #FDA4AF;
+    --color-subject-text-social: #7DD3FC;
+    --color-subject-text-health: #C4B5FD;
+  }
+}
+

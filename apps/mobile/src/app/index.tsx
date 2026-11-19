@@ -1,24 +1,26 @@
-import { defaultLocale, t } from "@keoshaa/i18n";
-import { color, fontSize, space } from "@keoshaa/tokens";
-import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Redirect } from "expo-router";
 
-export default function HomeScreen() {
-  return (
-    <SafeAreaView style={styles.screen}>
-      <View style={styles.content}>
-        <Text accessibilityRole="header" style={styles.title}>
-          {t(defaultLocale, "app.name")}
-        </Text>
-        <Text style={styles.tagline}>{t(defaultLocale, "app.tagline")}</Text>
-      </View>
-    </SafeAreaView>
-  );
+import { Screen, StateView } from "@/components/ui";
+import { useSession } from "@/features/session";
+import { startsAtOnboarding } from "@/lib/config";
+
+/** Opens Home when a stored session refreshes, otherwise the front door (sign-in guide). */
+export default function Index() {
+  const { status, retryStart } = useSession();
+  if (status === "booting") {
+    return (
+      <Screen edges={["top"]}>
+        <StateView kind="loading" />
+      </Screen>
+    );
+  }
+  if (status === "offline") {
+    return (
+      <Screen edges={["top"]}>
+        <StateView kind="offline" onRetry={retryStart} />
+      </Screen>
+    );
+  }
+  const home = status === "signedIn" && !startsAtOnboarding();
+  return <Redirect href={home ? "/home" : "/onboarding"} />;
 }
-
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: color.background },
-  content: { flex: 1, justifyContent: "center", gap: space[3], paddingHorizontal: space[5] },
-  title: { fontSize: fontSize.xxl, fontWeight: "600", color: color.brand },
-  tagline: { fontSize: fontSize.lg, color: color.textMuted },
-});

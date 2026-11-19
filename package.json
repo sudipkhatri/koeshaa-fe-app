@@ -21,6 +21,7 @@
     "format:check": "prettier --check .",
     "api:fetch": "npm --workspace @keoshaa/api-client run fetch",
     "api:generate": "npm --workspace @keoshaa/api-client run generate",
+    "tokens:generate": "npm --workspace @keoshaa/tokens run generate",
     "verify": "npm run format:check && turbo run typecheck lint test build",
     "prepare": "husky"
   },

@@ -48,7 +48,9 @@ function authAndErrors(options: ApiClientOptions): Middleware {
       return request;
     },
     async onResponse({ response }) {
-      if (response.ok) return response;
+      // Return nothing for a good response: on React Native the fetch polyfill's Response is not
+      // the global `Response`, and openapi-fetch refuses a "modified" response it cannot recognise.
+      if (response.ok) return undefined;
       const error = await toApiError(response);
       if (response.status === 401) options.onUnauthorized?.(error);
       throw error;
