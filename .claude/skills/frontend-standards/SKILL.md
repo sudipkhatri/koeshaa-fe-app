@@ -44,28 +44,24 @@ Guiding rule: prefer the simplest design that is **correct, accessible, secure, 
 
 Standards describe the target. Some supporting pieces do not exist yet; when a change needs one, build it as part of that change (with tests). Reviewers must not penalise its absence in changes that do not need it.
 
-| Not yet built                                                                                               | Build it when                                 |
-| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| TanStack Query provider and query-key helpers                                                               | First screen that loads server data           |
-| Session handling (refresh single-flight, sign-out on `SESSION_ENDED`), mobile secure token store, device id | First sign-in screen                          |
-| Form library (React Hook Form + zod resolver)                                                               | First form                                    |
-| Locale switching (user choice, persisted)                                                                   | First settings screen                         |
-| Mock API for tests (MSW)                                                                                    | First test of a component that calls the API  |
-| Web end-to-end tests (Playwright)                                                                           | First complete web flow                       |
-| Mobile end-to-end tests (Maestro)                                                                           | First complete mobile flow                    |
-| On-device database and sync queue (`expo-sqlite`)                                                           | First offline feature (guest progress, ACC-6) |
-| Error reporting (crash and error tracking)                                                                  | Before the first release to real users        |
-| Push notifications                                                                                          | When the backend's push channel exists        |
+| Not yet built                                                                                        | Build it when                                 |
+| ---------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Web: `components/ui` building blocks, TanStack Query, session handling, forms, locale switching, MSW | First web screen that needs each              |
+| Web end-to-end tests (Playwright)                                                                    | First complete web flow                       |
+| Mobile end-to-end tests (Maestro)                                                                    | First complete mobile flow                    |
+| On-device database and sync queue (`expo-sqlite`)                                                    | First offline feature (guest progress, ACC-6) |
+| Error reporting (crash and error tracking)                                                           | Before the first release to real users        |
+| Push notifications                                                                                   | When the backend's push channel exists        |
 
 Already in place:
 
 - npm workspaces + Turborepo; `npm run verify` (format check, typecheck, lint, test, build)
 - `apps/web`: Next.js 16 App Router, Tailwind v4 themed from tokens, Vitest + Testing Library
-- `apps/mobile`: Expo SDK 57, Expo Router, Jest (`jest-expo`) + React Native Testing Library
+- `apps/mobile`: Expo SDK 57, Expo Router, Jest (`jest-expo`) + React Native Testing Library, NativeWind 4 with generated light/dark themes and a saved theme choice, Baloo 2 fonts, `components/ui` building blocks, TanStack Query, session handling with a secure token store, React Hook Form + zod, locale switching (persisted), MSW mocks for API tests
 - `packages/api-client`: types generated from the backend's OpenAPI (`openapi.json` snapshot) + typed client (`openapi-fetch`) that adds the token and turns error envelopes into `ApiError` / connection failures into `NetworkError`
 - `packages/core`: envelope types, `ApiError`, identifier detection and phone normalisation (mirrors the backend), zod schemas for password, identifier and code, session interfaces
 - `packages/i18n`: English (default) and Nepali catalogues with type-checked keys
-- `packages/tokens`: colours, spacing, radii, type sizes, touch target
+- `packages/tokens`: colours (light and dark), spacing, radii, type sizes, touch target; generates the web `@theme` and the mobile theme (`npm run tokens:generate`), with a drift test in each app
 - Husky pre-commit (lint-staged, typecheck, test); CI workflow (`.github/workflows/ci.yml`)
 
 ## Core rules (always apply)

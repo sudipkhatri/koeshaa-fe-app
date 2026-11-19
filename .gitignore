@@ -10,3 +10,6 @@ dist/
 .claude/settings.local.json
 
 # apps keep their own ignores (apps/web/.gitignore, apps/mobile/.gitignore)
+
+# HTML design prototypes (shared as artifacts, not shipped)
+prototype/

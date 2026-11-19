@@ -30,6 +30,7 @@ src/
 - Route files only compose: read params, render a feature component. No data fetching logic, no business rules.
 - A feature owns its API hooks, components and tests. Another feature uses it through its public `index.ts`, never deep imports.
 - Generic components in `components/` know nothing about features or the API.
+- Each app keeps a small set of building blocks in `components/ui/` that every screen is made from: `Screen`, `Text`, `Button`, `Card`, `ListRow`, `Chip`, `TextField`, `Sheet` and `StateView` (loading, empty, error, no connection). This is the minimum set; add more when a pattern repeats. Screens use these instead of raw elements and styles. Each one is small, typed and styled only through token classes (`styling.md`).
 - `lib/` is wiring only; no business rules.
 
 ## Abstractions
@@ -37,4 +38,5 @@ src/
 - Extract a shared component or hook after the second real use, not before.
 - Move code to `packages/` only when both apps use it.
 - Prefer composition (children, render props, hooks) over configuration-heavy components.
+- Keep it plain: no generic base-component factories, no wrapper per third-party component "just in case", no state library beyond TanStack Query and the one session provider, no styling library beyond Tailwind/NativeWind.
 - Do not add a feature the specs have not confirmed (`AGENTS.md`).

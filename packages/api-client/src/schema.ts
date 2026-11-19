@@ -177,6 +177,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/recovery-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ask support to help me back into an account with no phone or email */
+        post: operations["request_recovery_api_v1_auth_recovery_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me": {
         parameters: {
             query?: never;
@@ -191,7 +208,8 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /** Edit my name or date of birth */
+        patch: operations["update_profile_api_v1_me_patch"];
         trace?: never;
     };
     "/api/v1/me/devices": {
@@ -279,6 +297,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/identifiers/replace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Replace a phone or email with a new one (code from /identifiers/code) */
+        post: operations["replace_identifier_api_v1_me_identifiers_replace_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/identifiers/{identifier_id}": {
         parameters: {
             query?: never;
@@ -296,6 +331,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/close/code": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a code to my email (or phone) to close my account */
+        post: operations["close_code_api_v1_me_close_code_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/close": {
         parameters: {
             query?: never;
@@ -305,7 +357,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Close my account */
+        /** Close my account (password or code) */
         post: operations["close_api_v1_me_close_post"];
         delete?: never;
         options?: never;
@@ -445,6 +497,279 @@ export interface paths {
         put?: never;
         /** Accept an invitation (parents) */
         post: operations["accept_invitation_api_v1_me_guardian_invitations__link_id__accept_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/guardian-invitations/{link_id}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send my parent invitation again (students) */
+        post: operations["resend_invitation_api_v1_me_guardian_invitations__link_id__resend_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/guardianships/{link_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** End a parent and child link (either side) */
+        delete: operations["end_guardianship_api_v1_me_guardianships__link_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/children/{child_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Fix my child's name or date of birth (until their first chapter) */
+        patch: operations["update_child_api_v1_me_children__child_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/me/prompts/dismissals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Home prompts I dismissed (when and how often) */
+        get: operations["my_prompt_dismissals_api_v1_me_prompts_dismissals_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/prompts/{prompt}/dismiss": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Dismiss a home prompt */
+        put: operations["dismiss_prompt_api_v1_me_prompts__prompt__dismiss_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/enrollments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My enrollments */
+        get: operations["my_enrollments_api_v1_me_enrollments_get"];
+        put?: never;
+        /** Start an enrollment (draft) */
+        post: operations["create_enrollment_api_v1_me_enrollments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/enrollments/{enrollment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update my draft enrollment */
+        patch: operations["update_enrollment_api_v1_me_enrollments__enrollment_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/me/enrollments/{enrollment_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm my enrollment */
+        post: operations["confirm_enrollment_api_v1_me_enrollments__enrollment_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/enrollments/{enrollment_id}/corrections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Correct my enrollment inside the window */
+        post: operations["correct_enrollment_api_v1_me_enrollments__enrollment_id__corrections_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/enrollments/{enrollment_id}/optionals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Choose the optional subjects I deferred */
+        post: operations["choose_optionals_api_v1_me_enrollments__enrollment_id__optionals_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/enrollments/{enrollment_id}/change-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ask for a change after the window closed */
+        post: operations["submit_change_request_api_v1_me_enrollments__enrollment_id__change_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/prompts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My open prompts */
+        get: operations["my_prompts_api_v1_me_prompts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/prompts/new-year/dismiss": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Dismiss the new academic year prompt (for example: left school) */
+        post: operations["dismiss_new_year_api_v1_me_prompts_new_year_dismiss_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/enrollment/change-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Change request queue, oldest first */
+        get: operations["change_requests_api_v1_enrollment_change_requests_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/enrollment/change-requests/{request_id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve or refuse a change request */
+        post: operations["decide_change_request_api_v1_enrollment_change_requests__request_id__decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/schools": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My schools */
+        get: operations["my_schools_api_v1_me_schools_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -968,60 +1293,25 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/schools": {
+    "/api/v1/curriculum/pool-versions": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Schools */
-        get: operations["list_schools_api_v1_schools_get"];
+        /** List Pool Versions */
+        get: operations["list_pool_versions_api_v1_curriculum_pool_versions_get"];
         put?: never;
-        /** Create a school */
-        post: operations["create_school_api_v1_schools_post"];
+        /** Create Pool Version */
+        post: operations["create_pool_version_api_v1_curriculum_pool_versions_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/v1/schools/{school_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** A school */
-        get: operations["get_school_api_v1_schools__school_id__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/schools/{school_id}/members": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Handlers */
-        get: operations["list_members_api_v1_schools__school_id__members_get"];
-        put?: never;
-        /** Add a handler with a school role */
-        post: operations["add_member_api_v1_schools__school_id__members_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/schools/{school_id}/members/{user_id}": {
+    "/api/v1/curriculum/pool-versions/{version_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1031,8 +1321,423 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Remove a handler and their roles in this school */
-        delete: operations["remove_member_api_v1_schools__school_id__members__user_id__delete"];
+        /** Delete Pool Draft */
+        delete: operations["delete_pool_draft_api_v1_curriculum_pool_versions__version_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Pool Draft */
+        patch: operations["update_pool_draft_api_v1_curriculum_pool_versions__version_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/curriculum/pool-versions/{version_id}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Put Pool Item */
+        put: operations["put_pool_item_api_v1_curriculum_pool_versions__version_id__items_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/pool-versions/{version_id}/items/{subject_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove Pool Item */
+        delete: operations["remove_pool_item_api_v1_curriculum_pool_versions__version_id__items__subject_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/pool-versions/{version_id}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Publish Pool Version */
+        post: operations["publish_pool_version_api_v1_curriculum_pool_versions__version_id__publish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/academic-years/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** The current academic year */
+        get: operations["current_academic_year_api_v1_catalog_academic_years_current_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/grade-levels": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** All grade levels */
+        get: operations["grade_levels_api_v1_catalog_grade_levels_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/catalog/grade-levels/{grade}/pool": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Compulsory and optional subjects of a class (current published version) */
+        get: operations["grade_level_pool_api_v1_catalog_grade_levels__grade__pool_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/grade-levels": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Grade Levels */
+        get: operations["list_grade_levels_api_v1_curriculum_grade_levels_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/streams": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Streams */
+        get: operations["list_streams_api_v1_curriculum_streams_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/academic-years": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Academic Years */
+        get: operations["list_academic_years_api_v1_curriculum_academic_years_get"];
+        put?: never;
+        /** Create Academic Year */
+        post: operations["create_academic_year_api_v1_curriculum_academic_years_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/academic-years/{year_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Academic Year */
+        patch: operations["update_academic_year_api_v1_curriculum_academic_years__year_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/curriculum/academic-years/{year_id}/current": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Set Current Academic Year */
+        post: operations["set_current_academic_year_api_v1_curriculum_academic_years__year_id__current_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/subjects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Subjects */
+        get: operations["list_subjects_api_v1_curriculum_subjects_get"];
+        put?: never;
+        /** Create Subject */
+        post: operations["create_subject_api_v1_curriculum_subjects_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Availability */
+        get: operations["list_availability_api_v1_curriculum_availability_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/curriculum/availability/{grade_level_id}/{subject_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set Availability */
+        put: operations["set_availability_api_v1_curriculum_availability__grade_level_id___subject_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/school-leads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ask our team to talk to a school */
+        post: operations["submit_lead_api_v1_public_school_leads_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/school-leads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** School leads */
+        get: operations["list_leads_api_v1_admin_school_leads_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/school-leads/{lead_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A school lead */
+        get: operations["get_lead_api_v1_admin_school_leads__lead_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Assign a lead, move its status or link the school it became */
+        patch: operations["update_lead_api_v1_admin_school_leads__lead_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/site-pages/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** A site page: latest version, or the exact version a consent points at */
+        get: operations["read_page_api_v1_site_pages__slug__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/site-pages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Publish a new version of a page */
+        post: operations["publish_page_api_v1_admin_site_pages_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/organisations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Organisations */
+        get: operations["list_organisations_api_v1_organisations_get"];
+        put?: never;
+        /** Create an organisation */
+        post: operations["create_organisation_api_v1_organisations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/organisations/{organisation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** An organisation */
+        get: operations["get_organisation_api_v1_organisations__organisation_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update an organisation's profile */
+        patch: operations["update_organisation_api_v1_organisations__organisation_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/organisations/{organisation_id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Suspend, close or reopen an organisation (platform staff only) */
+        post: operations["change_organisation_status_api_v1_organisations__organisation_id__status_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/organisations/{organisation_id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Handlers */
+        get: operations["list_members_api_v1_organisations__organisation_id__members_get"];
+        put?: never;
+        /** Add a handler with an organisation role */
+        post: operations["add_member_api_v1_organisations__organisation_id__members_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/organisations/{organisation_id}/members/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a handler and their roles in this organisation */
+        delete: operations["remove_member_api_v1_organisations__organisation_id__members__user_id__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1331,6 +2036,347 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/content/items/{entity_type}/{entity_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Edit Item */
+        patch: operations["edit_item_api_v1_content_items__entity_type___entity_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/content/changes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Changes */
+        get: operations["list_changes_api_v1_content_changes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/changes/{change_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Change */
+        get: operations["get_change_api_v1_content_changes__change_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/changes/{change_id}/submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Change */
+        post: operations["submit_change_api_v1_content_changes__change_id__submit_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/changes/{change_id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decide Change */
+        post: operations["decide_change_api_v1_content_changes__change_id__decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Reviews */
+        get: operations["list_reviews_api_v1_content_reviews_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/reviews/{review_id}/submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Review */
+        post: operations["submit_review_api_v1_content_reviews__review_id__submit_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/reviews/{review_id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decide Review */
+        post: operations["decide_review_api_v1_content_reviews__review_id__decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/releases": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Releases */
+        get: operations["list_releases_api_v1_content_releases_get"];
+        put?: never;
+        /** Create Release */
+        post: operations["create_release_api_v1_content_releases_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/releases/{release_id}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Publish Release */
+        post: operations["publish_release_api_v1_content_releases__release_id__publish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/courses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Courses */
+        get: operations["list_courses_api_v1_content_courses_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/courses/{course_id}/release": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Pin Course */
+        put: operations["pin_course_api_v1_content_courses__course_id__release_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/chapters": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Chapter */
+        post: operations["create_chapter_api_v1_content_chapters_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/topics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Topic */
+        post: operations["create_topic_api_v1_content_topics_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/concepts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Concept */
+        post: operations["create_concept_api_v1_content_concepts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/content/questions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Question */
+        post: operations["create_question_api_v1_content_questions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{activity_id}/visibility": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set Visibility */
+        put: operations["set_visibility_api_v1_activities__activity_id__visibility_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{activity_id}/archive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Archive Activity */
+        post: operations["archive_activity_api_v1_activities__activity_id__archive_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{activity_id}/unarchive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Unarchive Activity */
+        post: operations["unarchive_activity_api_v1_activities__activity_id__unarchive_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/sections/{section_id}/order": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Reorder Section */
+        put: operations["reorder_section_api_v1_activities_sections__section_id__order_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -1352,10 +2398,105 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AcademicYearCreate */
+        AcademicYearCreate: {
+            /** Label */
+            label: string;
+            /**
+             * Starts On
+             * Format: date
+             */
+            starts_on: string;
+            /**
+             * Ends On
+             * Format: date
+             */
+            ends_on: string;
+            /**
+             * Is Current
+             * @default false
+             */
+            is_current: boolean;
+        };
+        /** AcademicYearRead */
+        AcademicYearRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /** Label */
+            label: string;
+            /**
+             * Starts On
+             * Format: date
+             */
+            starts_on: string;
+            /**
+             * Ends On
+             * Format: date
+             */
+            ends_on: string;
+            /** Is Current */
+            is_current: boolean;
+        };
+        /** AcademicYearUpdate */
+        AcademicYearUpdate: {
+            /** Label */
+            label?: string | null;
+            /** Starts On */
+            starts_on?: string | null;
+            /** Ends On */
+            ends_on?: string | null;
+        };
+        /**
+         * AccountKind
+         * @enum {string}
+         */
+        AccountKind: "staff" | "member";
+        /** ActivityRead */
+        ActivityRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Course Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            course_id: string;
+            /**
+             * Section Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            section_id: string;
+            /** Activity Type */
+            activity_type: string;
+            /** Position */
+            position: number;
+            /** Title */
+            title: string;
+            /** Visible */
+            visible: boolean;
+            /** Archived At */
+            archived_at: string | null;
+        };
         /** AddChildIn */
         AddChildIn: {
             child: components["schemas"]["ChildIn"];
             consents: components["schemas"]["ConsentsIn"];
+        };
+        /** Address */
+        Address: {
+            /** Province */
+            province?: string | null;
+            /** District */
+            district?: string | null;
+            /** Municipality */
+            municipality?: string | null;
+            /** Ward */
+            ward?: string | null;
         };
         /** ApiError */
         ApiError: {
@@ -1377,6 +2518,28 @@ export interface components {
             error: components["schemas"]["ApiError"];
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[AcademicYearRead] */
+        ApiResponse_AcademicYearRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["AcademicYearRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[ActivityRead] */
+        ApiResponse_ActivityRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["ActivityRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[AssignmentRead] */
         ApiResponse_AssignmentRead_: {
             /**
@@ -1386,6 +2549,61 @@ export interface components {
              */
             success: true;
             data: components["schemas"]["AssignmentRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[AvailabilityRead] */
+        ApiResponse_AvailabilityRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["AvailabilityRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[CatalogPoolRead] */
+        ApiResponse_CatalogPoolRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["CatalogPoolRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[CatalogYearRead] */
+        ApiResponse_CatalogYearRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["CatalogYearRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[ChangeRead] */
+        ApiResponse_ChangeRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["ChangeRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[ChangeRequestRead] */
+        ApiResponse_ChangeRequestRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["ChangeRequestRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[ChildRead] */
@@ -1419,6 +2637,28 @@ export interface components {
              */
             success: true;
             data: components["schemas"]["ConsentRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[CourseRead] */
+        ApiResponse_CourseRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["CourseRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[CreatedRead] */
+        ApiResponse_CreatedRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["CreatedRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[DirectGrantRead] */
@@ -1463,6 +2703,39 @@ export interface components {
              */
             success: true;
             data: components["schemas"]["DuplicateRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[EditResult] */
+        ApiResponse_EditResult_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["EditResult"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[EnrollmentRead] */
+        ApiResponse_EnrollmentRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["EnrollmentRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[EnrollmentsRead] */
+        ApiResponse_EnrollmentsRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["EnrollmentsRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[GuardianshipRead] */
@@ -1542,6 +2815,17 @@ export interface components {
             data: components["schemas"]["NotificationRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[OrganisationRead] */
+        ApiResponse_OrganisationRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["OrganisationRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[PageViewReceipt] */
         ApiResponse_PageViewReceipt_: {
             /**
@@ -1575,6 +2859,17 @@ export interface components {
             data: components["schemas"]["PartsRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[PoolVersionRead] */
+        ApiResponse_PoolVersionRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["PoolVersionRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[ReadAllResult] */
         ApiResponse_ReadAllResult_: {
             /**
@@ -1584,6 +2879,39 @@ export interface components {
              */
             success: true;
             data: components["schemas"]["ReadAllResult"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[RecoveryRequestRead] */
+        ApiResponse_RecoveryRequestRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["RecoveryRequestRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[ReleaseRead] */
+        ApiResponse_ReleaseRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["ReleaseRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[ReviewRead] */
+        ApiResponse_ReviewRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["ReviewRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[RoleRead] */
@@ -1597,15 +2925,26 @@ export interface components {
             data: components["schemas"]["RoleRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
-        /** ApiResponse[SchoolRead] */
-        ApiResponse_SchoolRead_: {
+        /** ApiResponse[SchoolLeadRead] */
+        ApiResponse_SchoolLeadRead_: {
             /**
              * Success
              * @default true
              * @constant
              */
             success: true;
-            data: components["schemas"]["SchoolRead"];
+            data: components["schemas"]["SchoolLeadRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[SchoolLeadReceipt] */
+        ApiResponse_SchoolLeadReceipt_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["SchoolLeadReceipt"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[ServiceStatus] */
@@ -1628,6 +2967,28 @@ export interface components {
              */
             success: true;
             data: components["schemas"]["SignInRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[SitePageRead] */
+        ApiResponse_SitePageRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["SitePageRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[SubjectRead] */
+        ApiResponse_SubjectRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["SubjectRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[TokensRead] */
@@ -1721,6 +3082,54 @@ export interface components {
             };
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[list[AcademicYearRead]] */
+        ApiResponse_list_AcademicYearRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["AcademicYearRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[AvailabilityRead]] */
+        ApiResponse_list_AvailabilityRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["AvailabilityRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[ChangeRead]] */
+        ApiResponse_list_ChangeRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["ChangeRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[ChangeRequestRead]] */
+        ApiResponse_list_ChangeRequestRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["ChangeRequestRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[list[ConsentRead]] */
         ApiResponse_list_ConsentRead__: {
             /**
@@ -1731,6 +3140,18 @@ export interface components {
             success: true;
             /** Data */
             data: components["schemas"]["ConsentRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[CourseRead]] */
+        ApiResponse_list_CourseRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["CourseRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[list[DeliveryRead]] */
@@ -1767,6 +3188,18 @@ export interface components {
             success: true;
             /** Data */
             data: components["schemas"]["DuplicateRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[GradeLevelRead]] */
+        ApiResponse_list_GradeLevelRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["GradeLevelRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[list[GuardianshipRead]] */
@@ -1817,6 +3250,18 @@ export interface components {
             data: components["schemas"]["MemberRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[list[MySchoolRead]] */
+        ApiResponse_list_MySchoolRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["MySchoolRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[list[NodeRead]] */
         ApiResponse_list_NodeRead__: {
             /**
@@ -1841,6 +3286,18 @@ export interface components {
             data: components["schemas"]["NotificationRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[list[OrganisationRead]] */
+        ApiResponse_list_OrganisationRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["OrganisationRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[list[PermissionRead]] */
         ApiResponse_list_PermissionRead__: {
             /**
@@ -1851,6 +3308,66 @@ export interface components {
             success: true;
             /** Data */
             data: components["schemas"]["PermissionRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[PoolVersionRead]] */
+        ApiResponse_list_PoolVersionRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["PoolVersionRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[PromptDismissalRead]] */
+        ApiResponse_list_PromptDismissalRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["PromptDismissalRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[PromptRead]] */
+        ApiResponse_list_PromptRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["PromptRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[ReleaseRead]] */
+        ApiResponse_list_ReleaseRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["ReleaseRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[ReviewRead]] */
+        ApiResponse_list_ReviewRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["ReviewRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[list[RoleRead]] */
@@ -1865,8 +3382,8 @@ export interface components {
             data: components["schemas"]["RoleRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
-        /** ApiResponse[list[SchoolRead]] */
-        ApiResponse_list_SchoolRead__: {
+        /** ApiResponse[list[SchoolLeadRead]] */
+        ApiResponse_list_SchoolLeadRead__: {
             /**
              * Success
              * @default true
@@ -1874,7 +3391,31 @@ export interface components {
              */
             success: true;
             /** Data */
-            data: components["schemas"]["SchoolRead"][];
+            data: components["schemas"]["SchoolLeadRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[StreamRead]] */
+        ApiResponse_list_StreamRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["StreamRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[SubjectRead]] */
+        ApiResponse_list_SubjectRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["SubjectRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[list[UserRead]] */
@@ -1949,6 +3490,77 @@ export interface components {
             /** Code */
             code: string;
         };
+        /** AvailabilityRead */
+        AvailabilityRead: {
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "available" | "partial" | "coming_soon";
+            /** Expected On */
+            expected_on: string | null;
+        };
+        /** AvailabilitySet */
+        AvailabilitySet: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "available" | "partial" | "coming_soon";
+            /** Expected On */
+            expected_on?: string | null;
+        };
+        /** CatalogPoolRead */
+        CatalogPoolRead: {
+            /**
+             * Pool Version Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            pool_version_id: string;
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /** Stream Id */
+            stream_id: string | null;
+            /** Optional Required */
+            optional_required: number;
+            /** Compulsory */
+            compulsory: components["schemas"]["PoolSubjectRead"][];
+            /** Optional */
+            optional: components["schemas"]["PoolSubjectRead"][];
+        };
+        /** CatalogYearRead */
+        CatalogYearRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /** Label */
+            label: string;
+            /**
+             * Starts On
+             * Format: date
+             */
+            starts_on: string;
+            /**
+             * Ends On
+             * Format: date
+             */
+            ends_on: string;
+        };
         /** ChallengeRead */
         ChallengeRead: {
             /** Challenge */
@@ -1974,6 +3586,115 @@ export interface components {
          * @enum {string}
          */
         ChallengeStep: "code" | "totp" | "mfa_setup";
+        /** ChangeDecision */
+        ChangeDecision: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "approved" | "rejected";
+            /** Notes */
+            notes?: string | null;
+        };
+        /** ChangeRead */
+        ChangeRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /** Entity Type */
+            entity_type: string;
+            /**
+             * Entity Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            entity_id: string;
+            /** Proposed */
+            proposed: {
+                [key: string]: unknown;
+            };
+            /**
+             * Author Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            author_id: string;
+            /** Status */
+            status: string;
+            /** Reviewer Id */
+            reviewer_id: string | null;
+            /** Notes */
+            notes: string | null;
+            /** Decided At */
+            decided_at: string | null;
+            /** Content Release Id */
+            content_release_id: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** ChangeRequestIn */
+        ChangeRequestIn: {
+            type: components["schemas"]["ChangeType"];
+            reason_code: components["schemas"]["ReasonCode"];
+            /** Reason Text */
+            reason_text?: string | null;
+            proposed: components["schemas"]["ProposedChange"];
+        };
+        /** ChangeRequestRead */
+        ChangeRequestRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Enrollment Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            enrollment_id: string;
+            /**
+             * Student Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            student_id: string;
+            type: components["schemas"]["ChangeType"];
+            reason_code: components["schemas"]["ReasonCode"];
+            /** Reason Text */
+            reason_text: string | null;
+            /** Proposed */
+            proposed: {
+                [key: string]: unknown;
+            };
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "submitted" | "approved" | "refused";
+            /** Decided By */
+            decided_by: string | null;
+            /** Decided At */
+            decided_at: string | null;
+            /** Decision Note */
+            decision_note: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /**
+         * ChangeType
+         * @enum {string}
+         */
+        ChangeType: "change_class" | "change_stream" | "change_optionals";
         /**
          * Channel
          * @enum {string}
@@ -1985,6 +3706,23 @@ export interface components {
             mode: components["schemas"]["Mode"];
             /** Allowed Modes */
             allowed_modes: components["schemas"]["Mode"][];
+        };
+        /** ChapterCreate */
+        ChapterCreate: {
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /** Number */
+            number: number;
+            /** Name */
+            name: string;
+            /**
+             * In Free Slice
+             * @default false
+             */
+            in_free_slice: boolean;
         };
         /** ChildIn */
         ChildIn: {
@@ -2032,6 +3770,16 @@ export interface components {
             /** Password */
             password: string;
         };
+        /**
+         * CloseMeIn
+         * @description Prove it is you with the password, or with the code sent by `POST /me/close/code`.
+         */
+        CloseMeIn: {
+            /** Password */
+            password?: string | null;
+            /** Code */
+            code?: string | null;
+        };
         /** CodeRequestIn */
         CodeRequestIn: {
             /**
@@ -2048,6 +3796,16 @@ export interface components {
             sent_to: string;
             /** Expires In */
             expires_in: number;
+        };
+        /** ConceptCreate */
+        ConceptCreate: {
+            /**
+             * Topic Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            topic_id: string;
+            /** Title */
+            title: string;
         };
         /**
          * ConsentDocument
@@ -2090,6 +3848,104 @@ export interface components {
             /** Privacy Version */
             privacy_version: string;
         };
+        /**
+         * ContactKind
+         * @enum {string}
+         */
+        ContactKind: "phone" | "email";
+        /**
+         * ContactLabel
+         * @enum {string}
+         */
+        ContactLabel: "parent" | "old_sign_in" | "other";
+        /** ContactRead */
+        ContactRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            kind: components["schemas"]["ContactKind"];
+            /** Value */
+            value: string;
+            label: components["schemas"]["ContactLabel"];
+            /** Name */
+            name: string | null;
+        };
+        /**
+         * CorrectionIn
+         * @description A correction inside the window; same shape as a proposed change.
+         */
+        CorrectionIn: {
+            /** Grade Level Id */
+            grade_level_id?: string | null;
+            /** Stream Id */
+            stream_id?: string | null;
+            /** Optional Subject Ids */
+            optional_subject_ids?: string[] | null;
+        };
+        /** CoursePin */
+        CoursePin: {
+            /**
+             * Content Release Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            content_release_id: string;
+        };
+        /** CourseRead */
+        CourseRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /**
+             * Academic Year Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            academic_year_id: string;
+            /**
+             * Content Release Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            content_release_id: string;
+            /** Status */
+            status: string;
+            /** Visibility */
+            visibility: string;
+            /** Starts On */
+            starts_on: string | null;
+            /** Ends On */
+            ends_on: string | null;
+        };
+        /**
+         * CreatedRead
+         * @description The new row starts unpublished; `review_id` is its first-time review item (draft).
+         */
+        CreatedRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /** Entity Type */
+            entity_type: string;
+            /**
+             * Review Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            review_id: string;
+            /**
+             * Content Release Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            content_release_id: string;
+        };
         /** CursorPagination */
         CursorPagination: {
             /** Limit */
@@ -2099,6 +3955,21 @@ export interface components {
             /** Has More */
             has_more: boolean;
         };
+        /** DecisionIn */
+        DecisionIn: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "approved" | "refused";
+            /** Note */
+            note?: string | null;
+        };
+        /**
+         * DefaultRole
+         * @enum {string}
+         */
+        DefaultRole: "student" | "parent";
         /** DeliveryRead */
         DeliveryRead: {
             /**
@@ -2186,6 +4057,20 @@ export interface components {
              */
             created_at: string;
         };
+        /** DismissIn */
+        DismissIn: {
+            /**
+             * Academic Year Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            academic_year_id: string;
+            reason: components["schemas"]["DismissReason"];
+        };
+        /**
+         * DismissReason
+         * @enum {string}
+         */
+        DismissReason: "left_school" | "later";
         /** DownloadRead */
         DownloadRead: {
             /**
@@ -2257,6 +4142,127 @@ export interface components {
          * @enum {string}
          */
         DuplicateStatus: "open" | "same_person" | "different";
+        /** EditRequest */
+        EditRequest: {
+            /** Fields */
+            fields: {
+                [key: string]: unknown;
+            };
+        };
+        /**
+         * EditResult
+         * @description `applied`: the live row changed now. Otherwise `change` holds the pending edit.
+         */
+        EditResult: {
+            /** Applied */
+            applied: boolean;
+            change: components["schemas"]["ChangeRead"] | null;
+        };
+        /** EnrollmentCreate */
+        EnrollmentCreate: {
+            /**
+             * Academic Year Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            academic_year_id: string;
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+        };
+        /** EnrollmentPatch */
+        EnrollmentPatch: {
+            /** Stream Id */
+            stream_id?: string | null;
+            /** Optional Subject Ids */
+            optional_subject_ids?: string[] | null;
+            /** Optionals Deferred */
+            optionals_deferred?: boolean | null;
+            /** Draft Step */
+            draft_step?: number | null;
+            parent_contact?: components["schemas"]["ParentContactIn"] | null;
+        };
+        /** EnrollmentRead */
+        EnrollmentRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Academic Year Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            academic_year_id: string;
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /** Stream Id */
+            stream_id: string | null;
+            /** Pool Version Id */
+            pool_version_id: string | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "draft" | "confirmed" | "locked" | "ended";
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "self" | "support" | "school";
+            /** Optionals Deferred */
+            optionals_deferred: boolean;
+            /** Draft Step */
+            draft_step: number;
+            /** Correction Count */
+            correction_count: number;
+            /** Changes Left */
+            changes_left: number;
+            /** Window Open */
+            window_open: boolean;
+            /** Read Only */
+            read_only: boolean;
+            /** Confirmed At */
+            confirmed_at: string | null;
+            /** Window Ends At */
+            window_ends_at: string | null;
+            parent_contact: components["schemas"]["ContactRead"] | null;
+            /** Subjects */
+            subjects: components["schemas"]["EnrollmentSubjectRead"][];
+        };
+        /** EnrollmentSubjectRead */
+        EnrollmentSubjectRead: {
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "compulsory" | "optional";
+            /**
+             * Added At
+             * Format: date-time
+             */
+            added_at: string;
+        };
+        /** EnrollmentsRead */
+        EnrollmentsRead: {
+            /** Current */
+            current: components["schemas"]["EnrollmentRead"][];
+            /** Past */
+            past: components["schemas"]["EnrollmentRead"][];
+        };
         /** ErrorDetail */
         ErrorDetail: {
             /** Field */
@@ -2278,6 +4284,24 @@ export interface components {
              * @description Item name.
              */
             name: string;
+        };
+        /** GradeLevelRead */
+        GradeLevelRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** Sort Order */
+            sort_order: number;
+            /** Has Streams */
+            has_streams: boolean;
+            /** Final Exam Name */
+            final_exam_name: string;
         };
         /** GuardianInviteIn */
         GuardianInviteIn: {
@@ -2368,6 +4392,21 @@ export interface components {
             /** Verified At */
             verified_at: string | null;
         };
+        /** IdentifierReplaceIn */
+        IdentifierReplaceIn: {
+            /**
+             * Replace Id
+             * @description The phone or email to replace
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            replace_id: string;
+            /** Identifier */
+            identifier: string;
+            /** Code */
+            code: string;
+            /** Current Password */
+            current_password: string;
+        };
         /** ImpersonationRead */
         ImpersonationRead: {
             /** Access Token */
@@ -2396,6 +4435,11 @@ export interface components {
             /** Channels */
             channels: components["schemas"]["ChannelPreference"][];
         };
+        /**
+         * LeadStatus
+         * @enum {string}
+         */
+        LeadStatus: "new" | "contacted" | "won" | "lost";
         /** LinkedChildRead */
         LinkedChildRead: {
             /**
@@ -2406,6 +4450,8 @@ export interface components {
             /** Name */
             name: string;
             relationship: components["schemas"]["Relationship"];
+            /** Grade */
+            grade?: string | null;
         };
         /** MeRead */
         MeRead: {
@@ -2414,6 +4460,11 @@ export interface components {
             mfa_enabled: boolean;
             /** Missing Consents */
             missing_consents: string[];
+            /**
+             * Second Device Notice
+             * @default false
+             */
+            second_device_notice: boolean;
         };
         /** MemberAdd */
         MemberAdd: {
@@ -2427,6 +4478,8 @@ export interface components {
              * @default school_staff
              */
             role: string;
+            /** Title */
+            title?: string | null;
         };
         /** MemberRead */
         MemberRead: {
@@ -2439,6 +4492,8 @@ export interface components {
             name: string;
             /** Roles */
             roles: string[];
+            /** Title */
+            title?: string | null;
             /**
              * Joined At
              * Format: date-time
@@ -2451,6 +4506,29 @@ export interface components {
          * @enum {string}
          */
         Mode: "instant" | "daily" | "weekly" | "off";
+        /** MySchoolRead */
+        MySchoolRead: {
+            /**
+             * Organisation Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            organisation_id: string;
+            /** Name */
+            name: string;
+            /** Kind */
+            kind: string;
+            /** Status */
+            status: string;
+            /** Role */
+            role: string;
+            /** Title */
+            title?: string | null;
+            /**
+             * Joined At
+             * Format: date-time
+             */
+            joined_at: string;
+        };
         /** NodeRead */
         NodeRead: {
             /**
@@ -2546,6 +4624,96 @@ export interface components {
             /** Total */
             total: number;
         };
+        /** OptionalsChoiceIn */
+        OptionalsChoiceIn: {
+            /** Optional Subject Ids */
+            optional_subject_ids: string[];
+        };
+        /** OrganisationCreate */
+        OrganisationCreate: {
+            /** Name */
+            name: string;
+            /** @default school */
+            kind: components["schemas"]["OrganisationKind"];
+            address?: components["schemas"]["Address"] | null;
+            /** Contact Phone */
+            contact_phone?: string | null;
+            /** Pan Number */
+            pan_number?: string | null;
+            /**
+             * Vat Registered
+             * @default false
+             */
+            vat_registered: boolean;
+        };
+        /**
+         * OrganisationKind
+         * @enum {string}
+         */
+        OrganisationKind: "platform" | "school" | "tutor_practice";
+        /** OrganisationRead */
+        OrganisationRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Kind */
+            kind: string;
+            /** Status */
+            status: string;
+            address?: components["schemas"]["Address"] | null;
+            /** Contact Phone */
+            contact_phone?: string | null;
+            /** Pan Number */
+            pan_number?: string | null;
+            /**
+             * Vat Registered
+             * @default false
+             */
+            vat_registered: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /**
+         * OrganisationStatus
+         * @enum {string}
+         */
+        OrganisationStatus: "active" | "suspended" | "closed";
+        /** OrganisationStatusChange */
+        OrganisationStatusChange: {
+            status: components["schemas"]["OrganisationStatus"];
+        };
+        /**
+         * OrganisationUpdate
+         * @description Only the fields sent are changed.
+         */
+        OrganisationUpdate: {
+            /** Name */
+            name?: string | null;
+            address?: components["schemas"]["Address"] | null;
+            /** Contact Phone */
+            contact_phone?: string | null;
+            /** Pan Number */
+            pan_number?: string | null;
+            /** Vat Registered */
+            vat_registered?: boolean | null;
+        };
+        /**
+         * PageLocale
+         * @enum {string}
+         */
+        PageLocale: "en" | "ne";
+        /**
+         * PageSlug
+         * @enum {string}
+         */
+        PageSlug: "about" | "terms" | "privacy";
         /** PageViewBatch */
         PageViewBatch: {
             /**
@@ -2589,6 +4757,14 @@ export interface components {
              * @description Repeats of a view already recorded in the dedupe window; not stored.
              */
             collapsed: number;
+        };
+        /** ParentContactIn */
+        ParentContactIn: {
+            kind: components["schemas"]["ContactKind"];
+            /** Value */
+            value: string;
+            /** Name */
+            name?: string | null;
         };
         /** ParentRegisterIn */
         ParentRegisterIn: {
@@ -2688,6 +4864,90 @@ export interface components {
             /** Description */
             description: string;
         };
+        /** PoolItem */
+        PoolItem: {
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "compulsory" | "optional";
+        };
+        /** PoolSubjectRead */
+        PoolSubjectRead: {
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /**
+             * Availability
+             * @enum {string}
+             */
+            availability: "available" | "partial" | "coming_soon";
+            /** Expected On */
+            expected_on: string | null;
+        };
+        /** PoolVersionCreate */
+        PoolVersionCreate: {
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /** Stream Id */
+            stream_id?: string | null;
+            /**
+             * Optional Required
+             * @default 0
+             */
+            optional_required: number;
+            /** Items */
+            items?: components["schemas"]["PoolItem"][];
+        };
+        /** PoolVersionRead */
+        PoolVersionRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /** Stream Id */
+            stream_id: string | null;
+            /** Version */
+            version: number;
+            /** Optional Required */
+            optional_required: number;
+            /** Published At */
+            published_at: string | null;
+            /** Published By */
+            published_by: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Items */
+            items: components["schemas"]["PoolItem"][];
+        };
+        /** PoolVersionUpdate */
+        PoolVersionUpdate: {
+            /** Optional Required */
+            optional_required: number;
+        };
         /** PreferenceChange */
         PreferenceChange: {
             /** Kind */
@@ -2700,10 +4960,130 @@ export interface components {
             /** Changes */
             changes: components["schemas"]["PreferenceChange"][];
         };
+        /** ProfilePatch */
+        ProfilePatch: {
+            /** Name */
+            name?: string | null;
+            /** Date Of Birth */
+            date_of_birth?: string | null;
+        };
+        /** PromptDismissalRead */
+        PromptDismissalRead: {
+            prompt: components["schemas"]["PromptKind"];
+            /**
+             * Dismissed At
+             * Format: date-time
+             */
+            dismissed_at: string;
+            /** Times */
+            times: number;
+        };
+        /**
+         * PromptKind
+         * @enum {string}
+         */
+        PromptKind: "new_year" | "optionals" | "first_minute" | "target" | "coming_soon" | "save" | "install" | "reminder" | "second_device";
+        /** PromptRead */
+        PromptRead: {
+            prompt: components["schemas"]["PromptKind"];
+            /**
+             * Academic Year Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            academic_year_id: string;
+            /** Academic Year Label */
+            academic_year_label: string;
+        };
+        /** ProposedChange */
+        ProposedChange: {
+            /** Grade Level Id */
+            grade_level_id?: string | null;
+            /** Stream Id */
+            stream_id?: string | null;
+            /** Optional Subject Ids */
+            optional_subject_ids?: string[] | null;
+        };
+        /** QuestionCreate */
+        QuestionCreate: {
+            /**
+             * Idea Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            idea_id: string;
+            /**
+             * Organisation Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            organisation_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "single" | "multi" | "blank" | "answer_reason" | "written" | "numerical";
+            /**
+             * Source
+             * @default authored
+             * @enum {string}
+             */
+            source: "book" | "past_paper" | "authored";
+            /**
+             * Language
+             * @default en
+             * @enum {string}
+             */
+            language: "en" | "ne";
+            /** Stem */
+            stem: string;
+            /** Options */
+            options?: {
+                [key: string]: unknown;
+            } | null;
+            /** Answer Key */
+            answer_key: {
+                [key: string]: unknown;
+            };
+            /** Explanation */
+            explanation?: string | null;
+            /** Labels */
+            labels?: ("local" | "trap")[];
+            /** Marks */
+            marks?: number | string | null;
+        };
         /** ReadAllResult */
         ReadAllResult: {
             /** Marked Read */
             marked_read: number;
+        };
+        /**
+         * ReasonCode
+         * @enum {string}
+         */
+        ReasonCode: "wrong_class" | "wrong_stream" | "wrong_optionals" | "school_change" | "other";
+        /**
+         * RecoveryRequestIn
+         * @description A person locked out with no phone or email on the account (ACC-13.2). Support calls back
+         *     on `callback_phone`; nothing here proves who they are.
+         */
+        RecoveryRequestIn: {
+            /** Name */
+            name: string;
+            /** Callback Phone */
+            callback_phone: string;
+            /**
+             * Known Identifier
+             * @description Username, old number or email they remember
+             */
+            known_identifier?: string | null;
+            /** Note */
+            note?: string | null;
+        };
+        /** RecoveryRequestRead */
+        RecoveryRequestRead: {
+            /**
+             * Reference
+             * @description Quote this when support calls or when you call them
+             */
+            reference: string;
         };
         /** RefreshIn */
         RefreshIn: {
@@ -2718,12 +5098,91 @@ export interface components {
          * @enum {string}
          */
         Relationship: "mother" | "father" | "guardian";
+        /** ReleaseCreate */
+        ReleaseCreate: {
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /** Notes */
+            notes?: string | null;
+        };
+        /** ReleaseRead */
+        ReleaseRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /** Version */
+            version: number;
+            /** Notes */
+            notes: string | null;
+            /** Published At */
+            published_at: string | null;
+            /** Published By */
+            published_by: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** ReorderRequest */
+        ReorderRequest: {
+            /** Activity Ids */
+            activity_ids: string[];
+        };
         /** ResponseMeta */
         ResponseMeta: {
             /** Request Id */
             request_id?: string | null;
             /** Pagination */
             pagination?: components["schemas"]["OffsetPagination"] | components["schemas"]["CursorPagination"] | null;
+        };
+        /** ReviewDecision */
+        ReviewDecision: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "approved" | "changes_requested";
+            /** Notes */
+            notes?: string | null;
+        };
+        /** ReviewRead */
+        ReviewRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Content Release Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            content_release_id: string;
+            /** Entity Type */
+            entity_type: string;
+            /**
+             * Entity Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            entity_id: string;
+            /** Status */
+            status: string;
+            /** Reviewer Id */
+            reviewer_id: string | null;
+            /** Notes */
+            notes: string | null;
+            /** Decided At */
+            decided_at: string | null;
         };
         /** RoleAssign */
         RoleAssign: {
@@ -2734,7 +5193,7 @@ export interface components {
             role_id: string;
             /**
              * Scope Id
-             * @description School id for school roles
+             * @description Organisation id for organisation roles
              */
             scope_id?: string | null;
         };
@@ -2742,7 +5201,7 @@ export interface components {
         RoleCreate: {
             /** Name */
             name: string;
-            user_type: components["schemas"]["UserType"];
+            account_kind: components["schemas"]["AccountKind"];
             /** @default platform */
             scope_kind: components["schemas"]["ScopeKind"];
             /**
@@ -2762,7 +5221,7 @@ export interface components {
             id: string;
             /** Name */
             name: string;
-            user_type: components["schemas"]["UserType"];
+            account_kind: components["schemas"]["AccountKind"];
             scope_kind: components["schemas"]["ScopeKind"];
             /** Is System */
             is_system: boolean;
@@ -2778,33 +5237,78 @@ export interface components {
             /** Permissions */
             permissions?: string[] | null;
         };
-        /** SchoolCreate */
-        SchoolCreate: {
-            /** Name */
-            name: string;
-        };
-        /** SchoolRead */
-        SchoolRead: {
+        /** SchoolLeadRead */
+        SchoolLeadRead: {
             /**
              * Id
              * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
              */
             id: string;
-            /** Name */
-            name: string;
-            /** Status */
-            status: string;
+            /** Contact Name */
+            contact_name: string;
+            /** School Name */
+            school_name: string;
+            /** Phone */
+            phone: string;
+            /** Message */
+            message?: string | null;
+            status: components["schemas"]["LeadStatus"];
+            /** Assigned To */
+            assigned_to?: string | null;
+            /** Organisation Id */
+            organisation_id?: string | null;
             /**
              * Created At
              * Format: date-time
              */
             created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** SchoolLeadReceipt */
+        SchoolLeadReceipt: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            status: components["schemas"]["LeadStatus"];
+        };
+        /**
+         * SchoolLeadSubmit
+         * @description What the public form sends. `website` is a honeypot: people never see or fill it.
+         */
+        SchoolLeadSubmit: {
+            /** Contact Name */
+            contact_name: string;
+            /** School Name */
+            school_name: string;
+            /** Phone */
+            phone: string;
+            /** Message */
+            message?: string | null;
+            /** Website */
+            website?: string | null;
+        };
+        /**
+         * SchoolLeadUpdate
+         * @description Only the fields sent are changed.
+         */
+        SchoolLeadUpdate: {
+            status?: components["schemas"]["LeadStatus"] | null;
+            /** Assigned To */
+            assigned_to?: string | null;
+            /** Organisation Id */
+            organisation_id?: string | null;
         };
         /**
          * ScopeKind
          * @enum {string}
          */
-        ScopeKind: "platform" | "school";
+        ScopeKind: "platform" | "organisation";
         /** ServiceStatus */
         ServiceStatus: {
             /** Status */
@@ -2832,6 +5336,54 @@ export interface components {
             tokens?: components["schemas"]["TokensRead"] | null;
             challenge?: components["schemas"]["ChallengeRead"] | null;
         };
+        /** SitePagePublish */
+        SitePagePublish: {
+            slug: components["schemas"]["PageSlug"];
+            locale: components["schemas"]["PageLocale"];
+            /** Version */
+            version: string;
+            /** Title */
+            title: string;
+            /** Body */
+            body: string;
+        };
+        /**
+         * SitePageRead
+         * @description `locale` is the language of the text returned, which is English when the asked-for
+         *     language has no published version.
+         */
+        SitePageRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            slug: components["schemas"]["PageSlug"];
+            locale: components["schemas"]["PageLocale"];
+            /** Version */
+            version: string;
+            /** Title */
+            title: string;
+            /** Body */
+            body: string;
+            /**
+             * Published At
+             * Format: date-time
+             */
+            published_at: string;
+        };
+        /** StreamRead */
+        StreamRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+        };
         /** StudentRegisterIn */
         StudentRegisterIn: {
             /**
@@ -2855,6 +5407,43 @@ export interface components {
             /** Password */
             password: string;
             consents: components["schemas"]["ConsentsIn"];
+        };
+        /** SubjectCreate */
+        SubjectCreate: {
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /** Stream Id */
+            stream_id?: string | null;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** Curriculum Order */
+            curriculum_order: number;
+        };
+        /** SubjectRead */
+        SubjectRead: {
+            /**
+             * Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            id: string;
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /** Stream Id */
+            stream_id: string | null;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** Curriculum Order */
+            curriculum_order: number;
         };
         /** TokensRead */
         TokensRead: {
@@ -2884,6 +5473,24 @@ export interface components {
              * @description Shown once, after setting up an authenticator app
              */
             recovery_codes?: string[] | null;
+        };
+        /** TopicCreate */
+        TopicCreate: {
+            /**
+             * Chapter Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            chapter_id: string;
+            /** Number */
+            number: number;
+            /** Slug */
+            slug: string;
+            /** Question */
+            question: string;
+            /** Name */
+            name: string;
+            /** Overview */
+            overview: string;
         };
         /** UnreadCount */
         UnreadCount: {
@@ -2961,7 +5568,7 @@ export interface components {
              * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
              */
             user_id: string;
-            user_type: components["schemas"]["UserType"];
+            account_kind: components["schemas"]["AccountKind"];
             /** Status */
             status: string;
             /** Roles */
@@ -2973,19 +5580,21 @@ export interface components {
              * @description Platform-wide effective permissions
              */
             effective_platform: string[];
-            /** Effective By School */
-            effective_by_school: {
+            /** Effective By Organisation */
+            effective_by_organisation: {
                 [key: string]: string[];
             };
         };
         /** UserCreate */
         UserCreate: {
-            user_type: components["schemas"]["UserType"];
+            account_kind: components["schemas"]["AccountKind"];
+            /** @description Role granted at creation (members only) */
+            default_role?: components["schemas"]["DefaultRole"] | null;
             /** Name */
             name: string;
             /**
              * Date Of Birth
-             * @description Students only
+             * @description Required when default_role is student
              */
             date_of_birth?: string | null;
             /** Identifiers */
@@ -3003,7 +5612,7 @@ export interface components {
              * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
              */
             id: string;
-            user_type: components["schemas"]["UserType"];
+            account_kind: components["schemas"]["AccountKind"];
             status: components["schemas"]["UserStatus"];
             /** Name */
             name: string;
@@ -3019,7 +5628,7 @@ export interface components {
             mfa_required: boolean;
             /**
              * Under 13
-             * @description Students only
+             * @description Set when a date of birth is known
              */
             under_13: boolean | null;
             /** Identifiers */
@@ -3037,11 +5646,6 @@ export interface components {
          * @enum {string}
          */
         UserStatus: "active" | "paused" | "closing" | "closed";
-        /**
-         * UserType
-         * @enum {string}
-         */
-        UserType: "platform" | "school" | "student" | "parent";
         /** UserUpdate */
         UserUpdate: {
             /** Name */
@@ -3095,6 +5699,11 @@ export interface components {
              * @description When a previous version is deleted.
              */
             expires_at: string | null;
+        };
+        /** VisibilitySet */
+        VisibilitySet: {
+            /** Visible */
+            visible: boolean;
         };
         /** WebhookCreate */
         WebhookCreate: {
@@ -3604,6 +6213,48 @@ export interface operations {
             };
         };
     };
+    request_recovery_api_v1_auth_recovery_requests_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecoveryRequestIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_RecoveryRequestRead_"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
     me_api_v1_me_get: {
         parameters: {
             query?: never;
@@ -3620,6 +6271,66 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiResponse_MeRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_profile_api_v1_me_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProfilePatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_UserRead_"];
                 };
             };
             /** @description Missing, invalid or expired token */
@@ -3950,6 +6661,66 @@ export interface operations {
             };
         };
     };
+    replace_identifier_api_v1_me_identifiers_replace_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IdentifierReplaceIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_IdentifierRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
     remove_identifier_api_v1_me_identifiers__identifier_id__delete: {
         parameters: {
             query?: never;
@@ -4010,6 +6781,62 @@ export interface operations {
             };
         };
     };
+    close_code_api_v1_me_close_code_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CodeSentRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
     close_api_v1_me_close_post: {
         parameters: {
             query?: never;
@@ -4019,7 +6846,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CloseIn"];
+                "application/json": components["schemas"]["CloseMeIn"];
             };
         };
         responses: {
@@ -4613,6 +7440,1008 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiResponse_GuardianshipRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    resend_invitation_api_v1_me_guardian_invitations__link_id__resend_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                link_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_GuardianshipRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    end_guardianship_api_v1_me_guardianships__link_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                link_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_child_api_v1_me_children__child_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                child_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProfilePatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_UserRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    my_prompt_dismissals_api_v1_me_prompts_dismissals_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_PromptDismissalRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    dismiss_prompt_api_v1_me_prompts__prompt__dismiss_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                prompt: components["schemas"]["PromptKind"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    my_enrollments_api_v1_me_enrollments_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_EnrollmentsRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_enrollment_api_v1_me_enrollments_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnrollmentCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_EnrollmentRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_enrollment_api_v1_me_enrollments__enrollment_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                enrollment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EnrollmentPatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_EnrollmentRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    confirm_enrollment_api_v1_me_enrollments__enrollment_id__confirm_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                enrollment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_EnrollmentRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    correct_enrollment_api_v1_me_enrollments__enrollment_id__corrections_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                enrollment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CorrectionIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_EnrollmentRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    choose_optionals_api_v1_me_enrollments__enrollment_id__optionals_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                enrollment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OptionalsChoiceIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_EnrollmentRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    submit_change_request_api_v1_me_enrollments__enrollment_id__change_requests_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                enrollment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeRequestIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ChangeRequestRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    my_prompts_api_v1_me_prompts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_PromptRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    dismiss_new_year_api_v1_me_prompts_new_year_dismiss_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DismissIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    change_requests_api_v1_enrollment_change_requests_get: {
+        parameters: {
+            query?: {
+                status?: ("submitted" | "approved" | "refused") | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_ChangeRequestRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    decide_change_request_api_v1_enrollment_change_requests__request_id__decision_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                request_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisionIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ChangeRequestRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    my_schools_api_v1_me_schools_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_MySchoolRead__"];
                 };
             };
             /** @description Missing, invalid or expired token */
@@ -6837,11 +10666,14 @@ export interface operations {
             };
         };
     };
-    list_schools_api_v1_schools_get: {
+    list_pool_versions_api_v1_curriculum_pool_versions_get: {
         parameters: {
             query?: {
+                grade_level_id?: string | null;
+                stream_id?: string | null;
+                published?: boolean | null;
                 limit?: number;
-                cursor?: string | null;
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -6855,7 +10687,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse_list_SchoolRead__"];
+                    "application/json": components["schemas"]["ApiResponse_list_PoolVersionRead__"];
                 };
             };
             /** @description Missing, invalid or expired token */
@@ -6896,7 +10728,7 @@ export interface operations {
             };
         };
     };
-    create_school_api_v1_schools_post: {
+    create_pool_version_api_v1_curriculum_pool_versions_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -6905,7 +10737,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["SchoolCreate"];
+                "application/json": components["schemas"]["PoolVersionCreate"];
             };
         };
         responses: {
@@ -6915,7 +10747,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse_SchoolRead_"];
+                    "application/json": components["schemas"]["ApiResponse_PoolVersionRead_"];
                 };
             };
             /** @description Missing, invalid or expired token */
@@ -6956,12 +10788,193 @@ export interface operations {
             };
         };
     };
-    get_school_api_v1_schools__school_id__get: {
+    delete_pool_draft_api_v1_curriculum_pool_versions__version_id__delete: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                school_id: string;
+                version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_pool_draft_api_v1_curriculum_pool_versions__version_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PoolVersionUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_PoolVersionRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    put_pool_item_api_v1_curriculum_pool_versions__version_id__items_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PoolItem"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_PoolVersionRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    remove_pool_item_api_v1_curriculum_pool_versions__version_id__items__subject_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version_id: string;
+                subject_id: string;
             };
             cookie?: never;
         };
@@ -6973,7 +10986,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ApiResponse_SchoolRead_"];
+                    "application/json": components["schemas"]["ApiResponse_PoolVersionRead_"];
                 };
             };
             /** @description Missing, invalid or expired token */
@@ -7014,7 +11027,1402 @@ export interface operations {
             };
         };
     };
-    list_members_api_v1_schools__school_id__members_get: {
+    publish_pool_version_api_v1_curriculum_pool_versions__version_id__publish_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                version_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_PoolVersionRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    current_academic_year_api_v1_catalog_academic_years_current_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CatalogYearRead_"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    grade_levels_api_v1_catalog_grade_levels_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_GradeLevelRead__"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    grade_level_pool_api_v1_catalog_grade_levels__grade__pool_get: {
+        parameters: {
+            query?: {
+                stream?: string | null;
+            };
+            header?: never;
+            path: {
+                grade: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CatalogPoolRead_"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_grade_levels_api_v1_curriculum_grade_levels_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_GradeLevelRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_streams_api_v1_curriculum_streams_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_StreamRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_academic_years_api_v1_curriculum_academic_years_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_AcademicYearRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_academic_year_api_v1_curriculum_academic_years_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AcademicYearCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_AcademicYearRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_academic_year_api_v1_curriculum_academic_years__year_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                year_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AcademicYearUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_AcademicYearRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    set_current_academic_year_api_v1_curriculum_academic_years__year_id__current_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                year_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_AcademicYearRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_subjects_api_v1_curriculum_subjects_get: {
+        parameters: {
+            query?: {
+                grade_level_id?: string | null;
+                stream_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_SubjectRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_subject_api_v1_curriculum_subjects_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubjectCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SubjectRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_availability_api_v1_curriculum_availability_get: {
+        parameters: {
+            query?: {
+                grade_level_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_AvailabilityRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    set_availability_api_v1_curriculum_availability__grade_level_id___subject_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                grade_level_id: string;
+                subject_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AvailabilitySet"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_AvailabilityRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    submit_lead_api_v1_public_school_leads_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SchoolLeadSubmit"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SchoolLeadReceipt_"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_leads_api_v1_admin_school_leads_get: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["LeadStatus"] | null;
+                assigned_to?: string | null;
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_SchoolLeadRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    get_lead_api_v1_admin_school_leads__lead_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                lead_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SchoolLeadRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_lead_api_v1_admin_school_leads__lead_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                lead_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SchoolLeadUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SchoolLeadRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    read_page_api_v1_site_pages__slug__get: {
+        parameters: {
+            query?: {
+                locale?: components["schemas"]["PageLocale"];
+                version?: string | null;
+            };
+            header?: never;
+            path: {
+                slug: components["schemas"]["PageSlug"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SitePageRead_"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    publish_page_api_v1_admin_site_pages_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SitePagePublish"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SitePageRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_organisations_api_v1_organisations_get: {
+        parameters: {
+            query?: {
+                kind?: components["schemas"]["OrganisationKind"] | null;
+                q?: string | null;
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_OrganisationRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_organisation_api_v1_organisations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrganisationCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_OrganisationRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    get_organisation_api_v1_organisations__organisation_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                organisation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_OrganisationRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_organisation_api_v1_organisations__organisation_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                organisation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrganisationUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_OrganisationRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    change_organisation_status_api_v1_organisations__organisation_id__status_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                organisation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrganisationStatusChange"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_OrganisationRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_members_api_v1_organisations__organisation_id__members_get: {
         parameters: {
             query?: {
                 limit?: number;
@@ -7022,7 +12430,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                school_id: string;
+                organisation_id: string;
             };
             cookie?: never;
         };
@@ -7075,12 +12483,12 @@ export interface operations {
             };
         };
     };
-    add_member_api_v1_schools__school_id__members_post: {
+    add_member_api_v1_organisations__organisation_id__members_post: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                school_id: string;
+                organisation_id: string;
             };
             cookie?: never;
         };
@@ -7137,12 +12545,12 @@ export interface operations {
             };
         };
     };
-    remove_member_api_v1_schools__school_id__members__user_id__delete: {
+    remove_member_api_v1_organisations__organisation_id__members__user_id__delete: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                school_id: string;
+                organisation_id: string;
                 user_id: string;
             };
             cookie?: never;
@@ -7960,7 +13368,7 @@ export interface operations {
     search_users_api_v1_users_get: {
         parameters: {
             query?: {
-                user_type?: components["schemas"]["UserType"] | null;
+                account_kind?: components["schemas"]["AccountKind"] | null;
                 name?: string | null;
                 identifier_kind?: components["schemas"]["IdentifierKind"] | null;
                 identifier?: string | null;
@@ -8400,6 +13808,1267 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ApiResponse_UserRead_"];
                 };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    edit_item_api_v1_content_items__entity_type___entity_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                entity_type: "chapter" | "topic" | "concept" | "question";
+                entity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EditRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_EditResult_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_changes_api_v1_content_changes_get: {
+        parameters: {
+            query?: {
+                status?: string | null;
+                entity_type?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_ChangeRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    get_change_api_v1_content_changes__change_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                change_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ChangeRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    submit_change_api_v1_content_changes__change_id__submit_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                change_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ChangeRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    decide_change_api_v1_content_changes__change_id__decision_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                change_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ChangeRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_reviews_api_v1_content_reviews_get: {
+        parameters: {
+            query?: {
+                status?: string | null;
+                release_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_ReviewRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    submit_review_api_v1_content_reviews__review_id__submit_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                review_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ReviewRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    decide_review_api_v1_content_reviews__review_id__decision_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                review_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ReviewRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_releases_api_v1_content_releases_get: {
+        parameters: {
+            query?: {
+                subject_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_ReleaseRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_release_api_v1_content_releases_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReleaseCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ReleaseRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    publish_release_api_v1_content_releases__release_id__publish_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                release_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ReleaseRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_courses_api_v1_content_courses_get: {
+        parameters: {
+            query?: {
+                academic_year_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_CourseRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    pin_course_api_v1_content_courses__course_id__release_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                course_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CoursePin"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CourseRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_chapter_api_v1_content_chapters_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChapterCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CreatedRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_topic_api_v1_content_topics_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TopicCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CreatedRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_concept_api_v1_content_concepts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConceptCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CreatedRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    create_question_api_v1_content_questions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_CreatedRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    set_visibility_api_v1_activities__activity_id__visibility_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VisibilitySet"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ActivityRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    archive_activity_api_v1_activities__activity_id__archive_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ActivityRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    unarchive_activity_api_v1_activities__activity_id__unarchive_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                activity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_ActivityRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    reorder_section_api_v1_activities_sections__section_id__order_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                section_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReorderRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Missing, invalid or expired token */
             401: {

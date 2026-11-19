@@ -10,6 +10,16 @@ function keys(node: object, prefix = ""): string[] {
   );
 }
 
+function entries(node: object, prefix = ""): [string, string][] {
+  return Object.entries(node).flatMap(([key, value]) =>
+    typeof value === "string"
+      ? [[`${prefix}${key}`, value] as [string, string]]
+      : entries(value as object, `${prefix}${key}.`),
+  );
+}
+
+const placeholders = (text: string) => [...text.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
+
 describe("t", () => {
   it("returns the string for the locale", () => {
     expect(t("en", "app.name")).toBe("Keoshaa");
@@ -25,5 +35,16 @@ describe("t", () => {
 
   it("has the same keys in every locale", () => {
     expect(keys(ne).sort()).toEqual(keys(en).sort());
+  });
+
+  it("uses the same {placeholders} for every key in en and ne", () => {
+    const neByKey = new Map(entries(ne));
+    const mismatches = entries(en)
+      .filter(([key, text]) => {
+        const other = neByKey.get(key);
+        return other === undefined || placeholders(text).join() !== placeholders(other).join();
+      })
+      .map(([key]) => key);
+    expect(mismatches).toEqual([]);
   });
 });

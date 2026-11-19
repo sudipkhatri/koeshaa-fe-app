@@ -9,3 +9,7 @@ apps/mobile/android
 packages/api-client/openapi.json
 packages/api-client/src/schema.ts
 package-lock.json
+apps/web/src/app/tokens.generated.css
+apps/mobile/global.css
+apps/mobile/tailwind.theme.generated.js
+apps/mobile/expo-env.d.ts
