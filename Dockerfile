@@ -1,5 +1,3 @@
-# Node 24 — matches repo .nvmrc / engines. Build stays bookworm-slim; runner stays Alpine.
-# Local parity of .docker/server/Dockerfile (CI and VPS use the server path).
 FROM node:24-bookworm-slim AS deps
 WORKDIR /app
 
@@ -12,7 +10,8 @@ COPY packages/i18n/package.json ./packages/i18n/
 COPY packages/tokens/package.json ./packages/tokens/
 
 ENV HUSKY=0
-RUN npm ci --prefer-offline --no-audit
+RUN npm ci --prefer-offline --no-audit \
+  && npm install --no-save --no-package-lock @tailwindcss/oxide-linux-x64-gnu@4.3.3
 
 FROM node:24-bookworm-slim AS builder
 WORKDIR /app

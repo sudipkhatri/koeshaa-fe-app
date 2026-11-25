@@ -68,6 +68,7 @@ Every merged change adds a line under **Unreleased** in the right section.
 
 ### Fixed
 
+- Web Docker image build installs `@tailwindcss/oxide-linux-x64-gnu` so Next.js can compile CSS on Linux CI (the Mac lockfile only pulled in the darwin binding).
 - Mobile tests that load the student's class mock `GET /api/v1/catalog/academic-years/current` and a full enrollment payload again, so Learn/Home no longer fail as a generic server error in CI.
 - School portal routes opt out of Next.js Instant Navigation validation (`instant = false`), matching admin. Signed-out `/school` no longer reports a dropped `page.tsx` segment in the Instant overlay.
 - Staff authenticator setup shows a QR code from the server's authenticator link, with the key beside it. Recovery codes stay on screen until they are saved.
