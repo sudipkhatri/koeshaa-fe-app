@@ -41,6 +41,9 @@
   "lint-staged": {
     "*.{ts,tsx,js,mjs,cjs,json,md,css,yml,yaml}": "prettier --write"
   },
+  "optionalDependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.3.3"
+  },
   "overrides": {
     "react": "$react",
     "react-dom": "$react-dom"

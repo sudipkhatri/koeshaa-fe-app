@@ -10,8 +10,7 @@ COPY packages/i18n/package.json ./packages/i18n/
 COPY packages/tokens/package.json ./packages/tokens/
 
 ENV HUSKY=0
-RUN npm ci --prefer-offline --no-audit \
-  && npm install --no-save --no-package-lock @tailwindcss/oxide-linux-x64-gnu@4.3.3
+RUN npm ci --prefer-offline --no-audit
 
 FROM node:24-bookworm-slim AS builder
 WORKDIR /app
