@@ -9,7 +9,10 @@ import type { SessionCore, TokensRead } from "./core";
 /** `booting`: reading the stored session; `offline`: a stored session but no connection yet. */
 export type SessionStatus = "booting" | "signedOut" | "signedIn" | "offline";
 
+export type AccountRole = "student" | "parent";
+
 export interface SignupDraft {
+  role: AccountRole;
   name: string;
   day: string;
   month: string;
@@ -20,6 +23,7 @@ export interface SignupDraft {
   password: string;
 }
 const emptyDraft: SignupDraft = {
+  role: "student",
   name: "",
   day: "",
   month: "",
@@ -29,6 +33,9 @@ const emptyDraft: SignupDraft = {
   password: "",
 };
 
+/** Sign-in step 2. `mfa_setup` shows a secret once, in memory only, never in a route or store. */
+export type AuthStep = "code" | "totp" | "mfa_setup";
+
 /** Where a sign-in, sign-up or reset code was sent; kept in memory only. */
 export interface AuthFlow {
   identifier: string;
@@ -37,8 +44,18 @@ export interface AuthFlow {
   /** The code the person typed; spent later by register or reset. */
   code: string;
   sentTo: string;
+  step: AuthStep;
+  /** Authenticator setup key. Shown once, then cleared. Never written to storage. */
+  setupSecret: string | null;
 }
-const emptyFlow: AuthFlow = { identifier: "", challenge: null, code: "", sentTo: "" };
+const emptyFlow: AuthFlow = {
+  identifier: "",
+  challenge: null,
+  code: "",
+  sentTo: "",
+  step: "code",
+  setupSecret: null,
+};
 
 interface SessionValue {
   status: SessionStatus;
@@ -55,6 +72,8 @@ interface SessionValue {
   signup: SignupDraft;
   updateSignup: (patch: Partial<SignupDraft>) => void;
   resetSignup: () => void;
+  /** Clears a half-finished sign-up and starts again as a student or a parent. */
+  beginSignup: (role: AccountRole) => void;
   parent: { number: string; sent: boolean };
   sendParentInvite: (number: string) => void;
 }
@@ -144,6 +163,10 @@ export function SessionProvider({
     updateSignup: (next) => setSignup((current) => ({ ...current, ...next })),
     resetSignup: () => {
       setSignup(emptyDraft);
+      setFlowState(emptyFlow);
+    },
+    beginSignup: (role) => {
+      setSignup({ ...emptyDraft, role });
       setFlowState(emptyFlow);
     },
     parent,

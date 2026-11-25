@@ -2,15 +2,26 @@ import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import { Banner, Header, LinkButton, Mascot, Screen, Text, Button } from "@/components/ui";
+import {
+  Banner,
+  Button,
+  Card,
+  Header,
+  LinkButton,
+  Mascot,
+  Screen,
+  Text,
+  TextField,
+} from "@/components/ui";
 import { useRequestCode, useVerifySignIn } from "@/features/auth/api";
-import { useSession } from "@/features/session";
+import { useSession, type AuthStep } from "@/features/session";
 import { isMockMode } from "@/lib/config";
-import { errorMessage } from "@/lib/errors";
+import { errorMessage, retryAfterSeconds } from "@/lib/errors";
 import { useLocale } from "@/lib/locale";
 import { useToast } from "@/lib/toast";
 import { isApiError } from "@keoshaa/core";
 
+import { BackupCodes } from "./components/BackupCodes";
 import { CodeInput } from "./components/CodeInput";
 import { CODE_LENGTH, RESEND_SECONDS } from "./mock";
 
@@ -20,16 +31,25 @@ interface CodeScreenProps {
   to: string;
   toParent: boolean;
   next: CodeNext;
+  step?: AuthStep;
 }
 
-export function CodeScreen({ to, toParent, next }: CodeScreenProps) {
+const RECOVERY_CODE_MIN = 6;
+const RECOVERY_CODE_MAX = 20;
+
+export function CodeScreen({ to, toParent, next, step = "code" }: CodeScreenProps) {
   const { t, formatClock } = useLocale();
   const session = useSession();
+  const setupSecret = step === "mfa_setup" ? session.flow.setupSecret : null;
   const toast = useToast();
   const verifySignIn = useVerifySignIn();
   const requestCode = useRequestCode();
   const [code, setCode] = useState("");
   const [resendIn, setResendIn] = useState(RESEND_SECONDS);
+  const [recoveryMode, setRecoveryMode] = useState(false);
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [codesToSave, setCodesToSave] = useState<{ name: string; codes: string[] } | null>(null);
+  const authenticator = step === "totp" || step === "mfa_setup";
 
   useEffect(() => {
     if (resendIn <= 0) return;
@@ -37,14 +57,27 @@ export function CodeScreen({ to, toParent, next }: CodeScreenProps) {
     return () => clearTimeout(timer);
   }, [resendIn]);
 
+  const openHome = (name: string) => {
+    setCodesToSave(null);
+    verifySignIn.reset();
+    router.replace("/home");
+    toast(t("auth.welcomeToast", { name }));
+  };
+
   const verify = (entered: string) => {
     if (next === "signed-in") {
+      if (verifySignIn.isPending) return;
       verifySignIn.mutate(entered, {
-        onSuccess: (name) => {
-          router.replace("/home");
-          toast(t("auth.welcomeToast", { name }));
+        onSuccess: (result) => {
+          if (result.recoveryCodes.length > 0) {
+            setCodesToSave({ name: result.name, codes: result.recoveryCodes });
+            return;
+          }
+          openHome(result.name);
         },
-        onError: () => setCode(""),
+        onError: () => {
+          if (!recoveryMode) setCode("");
+        },
       });
       return;
     }
@@ -53,8 +86,9 @@ export function CodeScreen({ to, toParent, next }: CodeScreenProps) {
     router.replace(next === "reset" ? "/onboarding/new-password" : "/onboarding/signup-password");
   };
 
-  const change = (value: string) => {
+  const onCodeChange = (value: string) => {
     setCode(value);
+    if (verifySignIn.isPending) return;
     verifySignIn.reset();
     if (value.length === CODE_LENGTH) verify(value);
   };
@@ -62,6 +96,10 @@ export function CodeScreen({ to, toParent, next }: CodeScreenProps) {
   const error = verifySignIn.error ?? requestCode.error;
   const message = error ? errorMessage(error, t, formatClock) : "";
   const expired = isApiError(verifySignIn.error, "CHALLENGE_EXPIRED");
+
+  if (codesToSave) {
+    return <BackupCodes codes={codesToSave.codes} onSaved={() => openHome(codesToSave.name)} />;
+  }
 
   if (expired) {
     return (
@@ -92,16 +130,80 @@ export function CodeScreen({ to, toParent, next }: CodeScreenProps) {
   const target = toParent && (isMockMode() || !to) ? t("auth.parentPhone") : to;
   const [before = "", after = ""] = t("code.sent", { to: target }).split(target);
   const sentParts = { before, target, after };
+  const title =
+    step === "mfa_setup"
+      ? t("auth.mfaTitle")
+      : step === "totp"
+        ? t("auth.totpTitle")
+        : t("code.title");
   return (
     <Screen scroll edges={["top", "bottom"]}>
-      <Header title={t("code.title")} />
-      <Text muted>
-        {sentParts.before}
-        <Text className="font-ui-bold text-text">{sentParts.target}</Text>
-        {sentParts.after}
-      </Text>
-      <CodeInput value={code} onChange={change} />
+      <Header title={title} />
+      {step === "totp" ? (
+        <Text muted>{t("auth.totpBody")}</Text>
+      ) : step === "mfa_setup" ? (
+        <View className="gap-3">
+          <Text muted>{t("auth.mfaBody")}</Text>
+          {setupSecret ? (
+            <Card>
+              <Text variant="caption">{t("auth.mfaSecret")}</Text>
+              <Text selectable variant="section" className="mt-1">
+                {setupSecret}
+              </Text>
+              <Text variant="small" className="mt-2">
+                {t("auth.mfaOnce")}
+              </Text>
+            </Card>
+          ) : (
+            <Banner tone="danger">{t("auth.mfaMissing")}</Banner>
+          )}
+        </View>
+      ) : (
+        <Text muted>
+          {sentParts.before}
+          <Text className="font-ui-bold text-text">{sentParts.target}</Text>
+          {sentParts.after}
+        </Text>
+      )}
+      {authenticator && recoveryMode ? (
+        <View className="mt-4 gap-3">
+          <TextField
+            label={t("auth.recoveryCode")}
+            hint={t("auth.recoveryCodeHint")}
+            value={recoveryCode}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            maxLength={RECOVERY_CODE_MAX}
+            onChangeText={(value) => {
+              setRecoveryCode(value.replace(/\s/g, "").slice(0, RECOVERY_CODE_MAX));
+              if (!verifySignIn.isPending) verifySignIn.reset();
+            }}
+          />
+          <Button
+            title={t("common.continue")}
+            size="lg"
+            loading={verifySignIn.isPending}
+            disabled={recoveryCode.trim().length < RECOVERY_CODE_MIN}
+            onPress={() => verify(recoveryCode.trim())}
+          />
+        </View>
+      ) : (
+        <CodeInput value={code} onChange={onCodeChange} />
+      )}
       {message ? <Banner tone="danger">{message}</Banner> : null}
+      {authenticator ? (
+        <LinkButton
+          title={recoveryMode ? t("auth.useAuthenticator") : t("auth.useRecoveryCode")}
+          className="mt-4 self-center"
+          onPress={() => {
+            setRecoveryMode((current) => !current);
+            setRecoveryCode("");
+            setCode("");
+            verifySignIn.reset();
+          }}
+        />
+      ) : null}
       {next === "signed-in" && !isMockMode() ? null : (
         <LinkButton
           title={
@@ -116,7 +218,13 @@ export function CodeScreen({ to, toParent, next }: CodeScreenProps) {
                 purpose: next === "reset" ? "reset" : "signup",
                 identifier: session.flow.identifier,
               },
-              { onSuccess: () => toast(t("code.newCode")) },
+              {
+                onSuccess: () => toast(t("code.newCode")),
+                onError: (requestError) => {
+                  const wait = retryAfterSeconds(requestError);
+                  if (wait > 0) setResendIn(wait);
+                },
+              },
             );
           }}
         />

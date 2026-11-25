@@ -8,12 +8,19 @@ describe("code route params", () => {
       to: "a•••@x.com",
       toParent: true,
       next: "reset",
+      step: "code",
     });
   });
 
   it("sends an unknown step back to the start", () => {
     expect(parseCodeParams({ to: "x", next: "admin" })).toBeNull();
     expect(parseCodeParams({})).toBeNull();
+  });
+
+  it("keeps an authenticator step and drops an unknown one back to a code", () => {
+    expect(parseCodeParams({ next: "signed-in", step: "totp" })?.step).toBe("totp");
+    expect(parseCodeParams({ next: "signed-in", step: "mfa_setup" })?.step).toBe("mfa_setup");
+    expect(parseCodeParams({ next: "signed-in", step: "sms" })?.step).toBe("code");
   });
 
   it("ignores a destination that is not masked", () => {

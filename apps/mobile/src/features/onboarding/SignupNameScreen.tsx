@@ -37,9 +37,11 @@ export function SignupNameScreen() {
   const numbers = (list: number[]) =>
     list.map((n) => ({ value: String(n), label: formatDigits(n) }));
 
+  const parent = signup.role === "parent";
   const next = () => {
-    if (!signup.name.trim() || !signup.day || !signup.month || !signup.year)
-      return setMessage(t("signup.fillAll"));
+    if (!signup.name.trim()) return setMessage(t("signup.fillName"));
+    if (parent) return router.push("/onboarding/signup-contact");
+    if (!signup.day || !signup.month || !signup.year) return setMessage(t("signup.fillAll"));
     const age = ageFrom(Number(signup.year), Number(signup.month), Number(signup.day));
     router.push(age < UNDER_AGE ? "/onboarding/under-13" : "/onboarding/signup-contact");
   };
@@ -65,36 +67,40 @@ export function SignupNameScreen() {
         }}
         autoComplete="given-name"
       />
-      <Text className="mb-2 mt-4 font-ui-semibold">{t("signup.birthdayLabel")}</Text>
-      <View className="flex-row gap-2">
-        <SelectField
-          className="w-24"
-          label={t("signup.day")}
-          value={signup.day}
-          options={numbers(range(1, 31))}
-          onChange={(day) => updateSignup({ day })}
-        />
-        <SelectField
-          className="flex-1"
-          label={t("signup.month")}
-          value={signup.month}
-          options={monthKeys.map((key, i) => ({
-            value: String(i + 1),
-            label: t(`months.${key}` as MessageKey),
-          }))}
-          onChange={(month) => updateSignup({ month })}
-        />
-        <SelectField
-          className="w-28"
-          label={t("signup.year")}
-          value={signup.year}
-          options={numbers(range(LAST_YEAR, FIRST_YEAR))}
-          onChange={(year) => updateSignup({ year })}
-        />
-      </View>
-      <Text variant="small" className="mt-2">
-        {t("signup.birthHint")}
-      </Text>
+      {parent ? null : (
+        <>
+          <Text className="mb-2 mt-4 font-ui-semibold">{t("signup.birthdayLabel")}</Text>
+          <View className="flex-row gap-2">
+            <SelectField
+              className="w-24"
+              label={t("signup.day")}
+              value={signup.day}
+              options={numbers(range(1, 31))}
+              onChange={(day) => updateSignup({ day })}
+            />
+            <SelectField
+              className="flex-1"
+              label={t("signup.month")}
+              value={signup.month}
+              options={monthKeys.map((key, i) => ({
+                value: String(i + 1),
+                label: t(`months.${key}` as MessageKey),
+              }))}
+              onChange={(month) => updateSignup({ month })}
+            />
+            <SelectField
+              className="w-28"
+              label={t("signup.year")}
+              value={signup.year}
+              options={numbers(range(LAST_YEAR, FIRST_YEAR))}
+              onChange={(year) => updateSignup({ year })}
+            />
+          </View>
+          <Text variant="small" className="mt-2">
+            {t("signup.birthHint")}
+          </Text>
+        </>
+      )}
       {message ? (
         <Banner tone="danger" className="mt-3">
           {message}

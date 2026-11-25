@@ -76,7 +76,7 @@ export function MeScreen() {
           </View>
           <View className="flex-1">
             <Text variant="title">{name}</Text>
-            <ClassPill />
+            <ClassPill onPress={() => router.push("/me/enrolment")} />
           </View>
         </View>
         {isMockMode() ? (
@@ -94,8 +94,15 @@ export function MeScreen() {
       <Group>
         <GroupRow
           first
-          icon="phone"
+          icon="cap"
           iconTone="primary"
+          title={t("me.enrolment")}
+          subtitle={t("me.enrolmentSub")}
+          onPress={() => router.push("/me/enrolment")}
+        />
+        <GroupRow
+          icon="phone"
+          iconTone="sky"
           title={t("me.devices")}
           subtitle={t("me.devicesInUse", {
             n: devices.data ? formatNumber(devices.data.length) : "-",

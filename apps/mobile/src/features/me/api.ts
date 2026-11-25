@@ -1,7 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { normaliseIdentifier } from "@keoshaa/core";
-
 import { keys } from "@/lib/query";
 import { useApi } from "@/features/session/use-api";
 
@@ -117,20 +115,6 @@ export function useDismissSecondDevice() {
       queryClient.setQueryData<Profile>(keys.me, (me) =>
         me ? { ...me, secondDeviceNotice: false } : me,
       ),
-  });
-}
-
-/** Student invites a parent by phone; the backend texts them. */
-export function useInviteParent() {
-  const api = useApi();
-  return useMutation({
-    mutationFn: async (phone: string) => {
-      if (!api) return;
-      const identifier = normaliseIdentifier(phone);
-      await api.POST("/api/v1/me/guardian-invitations", {
-        body: { phone: identifier?.value ?? phone, relationship: "guardian" },
-      });
-    },
   });
 }
 

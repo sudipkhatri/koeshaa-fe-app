@@ -1,7 +1,7 @@
 import { createApiClient } from "@keoshaa/api-client";
 
 import { apiBaseUrl } from "./env";
-import { accessToken } from "./session";
+import { fetchWithSession, getAccessToken } from "./session";
 
 /**
  * The browser's API client. The refresh token stays in the backend's `HttpOnly` cookie
@@ -9,7 +9,7 @@ import { accessToken } from "./session";
  */
 export const api = createApiClient({
   baseUrl: apiBaseUrl,
-  getAccessToken: accessToken,
+  getAccessToken,
   headers: { "X-Auth-Mode": "cookie" },
-  fetch: (request) => fetch(request, { credentials: "include" }),
+  fetch: fetchWithSession,
 });

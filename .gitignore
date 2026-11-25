@@ -8,6 +8,7 @@ dist/
 .env
 .env*.local
 .claude/settings.local.json
+project/
 
 # apps keep their own ignores (apps/web/.gitignore, apps/mobile/.gitignore)
 

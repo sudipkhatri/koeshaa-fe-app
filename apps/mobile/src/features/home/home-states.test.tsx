@@ -4,7 +4,17 @@ import { delay, http, HttpResponse } from "msw";
 
 import { ContentScreen } from "@/features/learn/ContentScreen";
 import { LearnScreen } from "@/features/learn/LearnScreen";
-import { API, errorBody, memoryTokenStore, testCore, tokensBody } from "@/test/api";
+import {
+  API,
+  currentAcademicYearHandler,
+  enrollmentsHandler,
+  enrollmentFixture,
+  errorBody,
+  gradeLevelsHandler,
+  memoryTokenStore,
+  testCore,
+  tokensBody,
+} from "@/test/api";
 import { renderWithProviders } from "@/test/render";
 import { server } from "@/test/server";
 
@@ -49,23 +59,13 @@ beforeEach(() =>
   server.use(
     http.post(`${API}/api/v1/auth/refresh`, () => HttpResponse.json(tokensBody("a2", "r2"))),
     profile(),
-    http.get(`${API}/api/v1/catalog/grade-levels`, () =>
-      HttpResponse.json({ success: true, data: [{ id: "g7", code: "c7" }], meta: {} }),
-    ),
-    http.get(`${API}/api/v1/me/enrollments`, () =>
+    currentAcademicYearHandler(),
+    gradeLevelsHandler(),
+    enrollmentsHandler([enrollmentFixture()]),
+    http.get(`${API}/api/v1/catalog/grade-levels/:grade/free-slice`, () =>
       HttpResponse.json({
         success: true,
-        data: {
-          current: [
-            {
-              id: "e1",
-              state: "confirmed",
-              grade_level_id: "g7",
-              stream_id: null,
-              subjects: [{ code: "mathematics", name: "Mathematics", kind: "compulsory" }],
-            },
-          ],
-        },
+        data: { grade_level_id: "g7", stream_id: null, subjects: [] },
         meta: {},
       }),
     ),
@@ -74,6 +74,7 @@ beforeEach(() =>
 afterEach(() => {
   mockNetwork.online = true;
   onlineManager.setOnline(true);
+  process.env.EXPO_PUBLIC_USE_MOCKS = "0";
   server.resetHandlers();
 });
 afterAll(() => {
@@ -89,9 +90,8 @@ async function renderSignedIn(ui: React.ReactElement) {
 
 const failEnrollments = () =>
   server.use(
-    http.get(`${API}/api/v1/catalog/grade-levels`, () =>
-      HttpResponse.json({ success: true, data: [], meta: {} }),
-    ),
+    currentAcademicYearHandler(),
+    gradeLevelsHandler(),
     http.get(`${API}/api/v1/me/enrollments`, () =>
       HttpResponse.json(errorBody("BOOM"), { status: 500 }),
     ),
@@ -99,7 +99,10 @@ const failEnrollments = () =>
 
 describe("Learn states", () => {
   it("shows the loading skeleton first", async () => {
-    server.use(http.get(`${API}/api/v1/me/enrollments`, () => delay("infinite")));
+    server.use(
+      currentAcademicYearHandler(),
+      http.get(`${API}/api/v1/me/enrollments`, () => delay("infinite")),
+    );
     await renderSignedIn(<LearnScreen />);
     expect(screen.getByLabelText("Loading")).toBeTruthy();
   });

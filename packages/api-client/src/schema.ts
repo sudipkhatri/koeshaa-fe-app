@@ -208,7 +208,7 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        /** Edit my name or date of birth */
+        /** Edit my language, name or date of birth */
         patch: operations["update_profile_api_v1_me_patch"];
         trace?: never;
     };
@@ -588,6 +588,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/study-preferences": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Change my study preferences (data saver) */
+        put: operations["change_study_preferences_api_v1_me_study_preferences_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/enrollments": {
         parameters: {
             query?: never;
@@ -753,6 +770,23 @@ export interface paths {
         put?: never;
         /** Approve or refuse a change request */
         post: operations["decide_change_request_api_v1_enrollment_change_requests__request_id__decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search a course */
+        get: operations["search_course_api_v1_me_search_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1431,6 +1465,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/catalog/grade-levels/{grade}/free-slice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Free chapters of a class that anyone can try without an account */
+        get: operations["grade_level_free_slice_api_v1_catalog_grade_levels__grade__free_slice_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/curriculum/grade-levels": {
         parameters: {
             query?: never;
@@ -1619,6 +1670,57 @@ export interface paths {
         head?: never;
         /** Assign a lead, move its status or link the school it became */
         patch: operations["update_lead_api_v1_admin_school_leads__lead_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Platform settings */
+        get: operations["list_settings_api_v1_admin_settings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/settings/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Change a platform setting */
+        put: operations["update_setting_api_v1_admin_settings__key__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/settings/{key}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Who changed a setting, when, from what to what */
+        get: operations["setting_history_api_v1_admin_settings__key__history_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/site-pages/{slug}": {
@@ -2738,6 +2840,17 @@ export interface components {
             data: components["schemas"]["EnrollmentsRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[FreeSliceRead] */
+        ApiResponse_FreeSliceRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["FreeSliceRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[GuardianshipRead] */
         ApiResponse_GuardianshipRead_: {
             /**
@@ -2780,6 +2893,17 @@ export interface components {
              */
             success: true;
             data: components["schemas"]["MeRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[MeSettingsRead] */
+        ApiResponse_MeSettingsRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["MeSettingsRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[MemberRead] */
@@ -2947,6 +3071,17 @@ export interface components {
             data: components["schemas"]["SchoolLeadReceipt"];
             meta?: components["schemas"]["ResponseMeta"];
         };
+        /** ApiResponse[SearchRead] */
+        ApiResponse_SearchRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["SearchRead"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
         /** ApiResponse[ServiceStatus] */
         ApiResponse_ServiceStatus_: {
             /**
@@ -2956,6 +3091,17 @@ export interface components {
              */
             success: true;
             data: components["schemas"]["ServiceStatus"];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[SettingRead] */
+        ApiResponse_SettingRead_: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["SettingRead"];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[SignInRead] */
@@ -3392,6 +3538,30 @@ export interface components {
             success: true;
             /** Data */
             data: components["schemas"]["SchoolLeadRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[SettingChangeRead]] */
+        ApiResponse_list_SettingChangeRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["SettingChangeRead"][];
+            meta?: components["schemas"]["ResponseMeta"];
+        };
+        /** ApiResponse[list[SettingRead]] */
+        ApiResponse_list_SettingRead__: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            /** Data */
+            data: components["schemas"]["SettingRead"][];
             meta?: components["schemas"]["ResponseMeta"];
         };
         /** ApiResponse[list[StreamRead]] */
@@ -4285,6 +4455,44 @@ export interface components {
              */
             name: string;
         };
+        /** FreeSliceChapterRead */
+        FreeSliceChapterRead: {
+            /**
+             * Chapter Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            chapter_id: string;
+            /** Number */
+            number: number;
+            /** Name */
+            name: string;
+        };
+        /** FreeSliceRead */
+        FreeSliceRead: {
+            /**
+             * Grade Level Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            grade_level_id: string;
+            /** Stream Id */
+            stream_id: string | null;
+            /** Subjects */
+            subjects: components["schemas"]["FreeSliceSubjectRead"][];
+        };
+        /** FreeSliceSubjectRead */
+        FreeSliceSubjectRead: {
+            /**
+             * Subject Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            subject_id: string;
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** Chapters */
+            chapters: components["schemas"]["FreeSliceChapterRead"][];
+        };
         /** GradeLevelRead */
         GradeLevelRead: {
             /**
@@ -4453,6 +4661,11 @@ export interface components {
             /** Grade */
             grade?: string | null;
         };
+        /**
+         * Locale
+         * @enum {string}
+         */
+        Locale: "en" | "ne";
         /** MeRead */
         MeRead: {
             user: components["schemas"]["UserRead"];
@@ -4461,10 +4674,30 @@ export interface components {
             /** Missing Consents */
             missing_consents: string[];
             /**
+             * Data Saver
+             * @default false
+             */
+            data_saver: boolean;
+            /**
              * Second Device Notice
              * @default false
              */
             second_device_notice: boolean;
+        };
+        /** MeSettingsRead */
+        MeSettingsRead: {
+            locale: components["schemas"]["Locale"];
+            /** Data Saver */
+            data_saver: boolean;
+        };
+        /** MeUpdate */
+        MeUpdate: {
+            /** Name */
+            name?: string | null;
+            /** Date Of Birth */
+            date_of_birth?: string | null;
+            /** @description Language the app shows: en or ne */
+            locale?: components["schemas"]["Locale"] | null;
         };
         /** MemberAdd */
         MemberAdd: {
@@ -5255,6 +5488,11 @@ export interface components {
             status: components["schemas"]["LeadStatus"];
             /** Assigned To */
             assigned_to?: string | null;
+            /**
+             * Assigned Name
+             * @description Current name of the staff user in assigned_to. Null when unassigned.
+             */
+            assigned_name?: string | null;
             /** Organisation Id */
             organisation_id?: string | null;
             /**
@@ -5309,10 +5547,108 @@ export interface components {
          * @enum {string}
          */
         ScopeKind: "platform" | "organisation";
+        /**
+         * SearchKind
+         * @enum {string}
+         */
+        SearchKind: "chapter" | "topic" | "concept" | "idea" | "question";
+        /** SearchRead */
+        SearchRead: {
+            /** Query */
+            query: string;
+            /** Corrected From */
+            corrected_from?: string | null;
+            /** Corrected To */
+            corrected_to?: string | null;
+            /** Results */
+            results: components["schemas"]["SearchResult"][];
+        };
+        /** SearchResult */
+        SearchResult: {
+            kind: components["schemas"]["SearchKind"];
+            /**
+             * Ref Id
+             * @example 01J9Z8Y7X6W5V4T3S2R1Q0P9N8
+             */
+            ref_id: string;
+            /** Chapter Id */
+            chapter_id: string | null;
+            /** Chapter Title */
+            chapter_title: string | null;
+            /** Topic Id */
+            topic_id: string | null;
+            /** Title */
+            title: string;
+            /** Title Highlights */
+            title_highlights: components["schemas"]["Span"][];
+            /** Snippet */
+            snippet: string;
+            /** Snippet Highlights */
+            snippet_highlights: components["schemas"]["Span"][];
+            /** In Free Slice */
+            in_free_slice: boolean;
+        };
         /** ServiceStatus */
         ServiceStatus: {
             /** Status */
             status: string;
+        };
+        /** SettingChangeRead */
+        SettingChangeRead: {
+            /**
+             * Changed At
+             * Format: date-time
+             */
+            changed_at: string;
+            /** Changed By */
+            changed_by: string | null;
+            /** Changed By Role */
+            changed_by_role: string | null;
+            /** Old Value */
+            old_value: number;
+            /** New Value */
+            new_value: number;
+        };
+        /** SettingRead */
+        SettingRead: {
+            /** Key */
+            key: string;
+            /** Description */
+            description: string;
+            /** Value */
+            value: number;
+            /** Default */
+            default: number;
+            /** Minimum */
+            minimum: number;
+            /** Maximum */
+            maximum: number;
+            /**
+             * Scope
+             * @default platform
+             * @constant
+             */
+            scope: "platform";
+            /**
+             * Is Default
+             * @description True while no one has changed it from the default
+             */
+            is_default: boolean;
+            /** Updated At */
+            updated_at?: string | null;
+            /**
+             * Updated By
+             * @description Account of the last change
+             */
+            updated_by?: string | null;
+        };
+        /** SettingUpdate */
+        SettingUpdate: {
+            /**
+             * Value
+             * @description Whole number inside the setting's range
+             */
+            value: number;
         };
         /** SignInIn */
         SignInIn: {
@@ -5372,6 +5708,10 @@ export interface components {
              */
             published_at: string;
         };
+        Span: [
+            number,
+            number
+        ];
         /** StreamRead */
         StreamRead: {
             /**
@@ -5407,6 +5747,14 @@ export interface components {
             /** Password */
             password: string;
             consents: components["schemas"]["ConsentsIn"];
+        };
+        /** StudyPreferencesIn */
+        StudyPreferencesIn: {
+            /**
+             * Data Saver
+             * @description Use less mobile data
+             */
+            data_saver: boolean;
         };
         /** SubjectCreate */
         SubjectCreate: {
@@ -6320,7 +6668,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["ProfilePatch"];
+                "application/json": components["schemas"]["MeUpdate"];
             };
         };
         responses: {
@@ -7768,6 +8116,66 @@ export interface operations {
             };
         };
     };
+    change_study_preferences_api_v1_me_study_preferences_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StudyPreferencesIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_MeSettingsRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
     my_enrollments_api_v1_me_enrollments_get: {
         parameters: {
             query?: never;
@@ -8386,6 +8794,65 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiResponse_ChangeRequestRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    search_course_api_v1_me_search_get: {
+        parameters: {
+            query: {
+                q: string;
+                course_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SearchRead_"];
                 };
             };
             /** @description Missing, invalid or expired token */
@@ -11203,6 +11670,48 @@ export interface operations {
             };
         };
     };
+    grade_level_free_slice_api_v1_catalog_grade_levels__grade__free_slice_get: {
+        parameters: {
+            query?: {
+                stream?: string | null;
+            };
+            header?: never;
+            path: {
+                grade: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_FreeSliceRead_"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
     list_grade_levels_api_v1_curriculum_grade_levels_get: {
         parameters: {
             query?: never;
@@ -11976,6 +12485,185 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiResponse_SchoolLeadRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    list_settings_api_v1_admin_settings_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_SettingRead__"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    update_setting_api_v1_admin_settings__key__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SettingUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_SettingRead_"];
+                };
+            };
+            /** @description Missing, invalid or expired token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Missing permission */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Request validation failed */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Unexpected server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    setting_history_api_v1_admin_settings__key__history_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse_list_SettingChangeRead__"];
                 };
             };
             /** @description Missing, invalid or expired token */

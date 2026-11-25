@@ -11,7 +11,9 @@ function flatten(palette: Palette): [string, string][] {
   const out: [string, string][] = [];
   for (const [name, value] of Object.entries(palette)) {
     if (typeof value === "string") out.push([kebab(name), value]);
-    else for (const [sub, hex] of Object.entries(value)) out.push([`${kebab(name)}-${sub}`, hex]);
+    else
+      for (const [sub, hex] of Object.entries(value))
+        out.push([`${kebab(name)}-${kebab(sub)}`, hex]);
   }
   return out;
 }
@@ -23,8 +25,12 @@ const vars = (scheme: ColorScheme, prefix: string, indent: string) =>
 
 /** Web: Tailwind v4 `@theme` (light) plus a dark override on the same variables. */
 export function buildWebTheme(): string {
+  const text = Object.entries(fontSize)
+    .map(([name, px]) => `  --text-${name}: ${px}px;`)
+    .join("\n");
   const shared =
     `  --radius-card: ${radius.card}px;\n  --radius-sheet: ${radius.sheet}px;\n` +
+    `  --radius-square: ${radius.square}px;\n${text}\n` +
     `  --shadow-card: ${shadow.light};`;
   return [
     `/* ${HEADER} */`,

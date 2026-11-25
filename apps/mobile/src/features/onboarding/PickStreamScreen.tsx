@@ -1,15 +1,16 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 
 import { Banner, Button, Header, Screen, Text } from "@/components/ui";
-import { usePickClass } from "@/features/enrollment/api";
+import { useStartEnrollment } from "@/features/enrollment/api";
 import { streamIds } from "@/features/session";
 import type { StreamId } from "@/features/session";
 import { errorMessage } from "@/lib/errors";
 import { useLocale } from "@/lib/locale";
 
 import { OptionCard } from "./components/OptionCard";
+import { continueAfterDraft } from "./enrol-nav";
 import { parseStreamGrade } from "./route-params";
 
 export function PickStreamScreen() {
@@ -17,19 +18,22 @@ export function PickStreamScreen() {
   const { grade } = useLocalSearchParams();
   const cls = parseStreamGrade(grade);
   const [stream, setStream] = useState<StreamId | null>(null);
-  const pick = usePickClass();
+  const start = useStartEnrollment();
   return (
     <Screen
       scroll
       edges={["top", "bottom"]}
       footer={
         <Button
-          title={t("pick.start")}
+          title={t("common.continue")}
           size="lg"
           disabled={!stream}
-          loading={pick.isPending}
+          loading={start.isPending}
           onPress={() =>
-            pick.mutate({ grade: cls, stream }, { onSuccess: () => router.replace("/home") })
+            start.mutate(
+              { grade: cls, stream },
+              { onSuccess: (draft) => continueAfterDraft(draft, { grade: cls, stream }) },
+            )
           }
         />
       }
@@ -38,9 +42,9 @@ export function PickStreamScreen() {
       <Text muted className="mb-4 mt-2">
         {t("pick.streamSub", { n: formatNumber(cls) })}
       </Text>
-      {pick.error ? (
+      {start.error ? (
         <Banner tone="danger" className="mb-3">
-          {errorMessage(pick.error, t, formatClock)}
+          {errorMessage(start.error, t, formatClock)}
         </Banner>
       ) : null}
       <View className="gap-3">

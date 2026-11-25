@@ -1,13 +1,18 @@
-import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 
+import type { components } from "@keoshaa/api-client";
 import type { SubjectId } from "@keoshaa/tokens";
 
 import { useClassInfo } from "@/features/enrollment/api";
 import type { ClassSubject } from "@/features/enrollment/api";
+import { useApi } from "@/features/session/use-api";
 import { isMockMode } from "@/lib/config";
+import { keys } from "@/lib/query";
 
 import { getSubject as getDemoSubject, getSubjects as getDemoSubjects, subjectIds } from "./mock";
-import type { Subject } from "./types";
+import type { Chapter, Subject } from "./types";
+
+type FreeSliceSubject = components["schemas"]["FreeSliceSubjectRead"];
 
 const ART_BY_CODE: Record<string, SubjectId> = {
   nepali: "nepali",
@@ -31,9 +36,9 @@ function assignArt(subjects: readonly ClassSubject[]): SubjectId[] {
 }
 
 /**
- * Subjects come from the student's enrollment (backend). The backend has no chapter, progress
- * or content endpoint for students yet, so real subjects have no chapters ("coming soon");
- * demo chapters exist only in mock mode.
+ * Subjects come from the student's enrollment. Chapter names come from the free slice.
+ * The backend has no lesson body yet, so opening a real chapter says lessons are coming soon.
+ * Demo chapters exist only in mock mode.
  */
 export function toSubjects(subjects: readonly ClassSubject[]): Subject[] {
   const art = assignArt(subjects);
@@ -61,20 +66,65 @@ export interface SubjectsState {
   hasClass: boolean;
 }
 
+function freeChapters(slice: readonly FreeSliceSubject[]): Map<string, Chapter[]> {
+  return new Map(
+    slice.map((subject) => [
+      subject.code,
+      subject.chapters.map((chapter, index) => ({
+        index,
+        chapterId: chapter.chapter_id,
+        name: { en: chapter.name, ne: chapter.name },
+      })),
+    ]),
+  );
+}
+
+function withFreeChapters(subjects: Subject[], slice: readonly FreeSliceSubject[]): Subject[] {
+  const chapters = freeChapters(slice);
+  return subjects.map((subject) => {
+    const next = chapters.get(subject.id);
+    return next ? { ...subject, chapters: next } : subject;
+  });
+}
+
+/** Free chapter names for the student's class. Disabled until the class is known. */
+export function useFreeSlice(grade: number, stream: string | null, enabled: boolean) {
+  const api = useApi();
+  const gradeCode = `c${grade}`;
+  return useQuery({
+    queryKey: keys.freeSlice(gradeCode, stream),
+    enabled: enabled && api !== null && grade > 0,
+    // Chapter names change rarely; reading them on every visit would waste mobile data.
+    staleTime: 5 * 60_000,
+    queryFn: async () => {
+      if (!api) return [];
+      const { data } = await api.GET("/api/v1/catalog/grade-levels/{grade}/free-slice", {
+        params: { path: { grade: gradeCode }, query: { stream } },
+      });
+      return data?.data.subjects ?? [];
+    },
+  });
+}
+
 export function useSubjects(): SubjectsState {
   const mocks = isMockMode();
-  const { data, isPending, isError, error, refetch } = useClassInfo();
-  const subjects = useMemo(
-    () => (mocks ? getDemoSubjects() : toSubjects(data?.subjects ?? [])),
-    [mocks, data],
-  );
+  const classInfo = useClassInfo();
+  const grade = classInfo.data?.grade ?? 0;
+  const stream = classInfo.data?.stream ?? null;
+  const slice = useFreeSlice(grade, stream, !mocks && classInfo.data != null);
+  const subjects = mocks
+    ? getDemoSubjects()
+    : withFreeChapters(toSubjects(classInfo.data?.subjects ?? []), slice.data ?? []);
   return {
     subjects,
-    isPending,
-    isError,
-    error,
-    refetch: () => void refetch(),
-    hasClass: mocks || !!data,
+    isPending: classInfo.isPending || (!mocks && classInfo.data != null && slice.isPending),
+    isError: classInfo.isError || slice.isError,
+    error: slice.error ?? classInfo.error,
+    refetch: () => {
+      void classInfo.refetch();
+      void slice.refetch();
+    },
+    hasClass: mocks || classInfo.data != null,
   };
 }
 

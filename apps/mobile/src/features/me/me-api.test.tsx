@@ -118,10 +118,14 @@ describe("Close account", () => {
 
   it("sends once however many times it is pressed, then shows the closed screen", async () => {
     let calls = 0;
+    let release = () => {};
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
     server.use(
       http.post(`${API}/api/v1/me/close`, async () => {
         calls += 1;
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await gate;
         return new HttpResponse(null, { status: 204 });
       }),
     );
@@ -132,6 +136,8 @@ describe("Close account", () => {
     );
     await press();
     await press();
+    expect(calls).toBe(1);
+    release();
     expect(await screen.findByText("Your account is closed")).toBeTruthy();
     expect(calls).toBe(1);
   });
@@ -150,7 +156,24 @@ describe("Parent invite", () => {
     server.use(
       http.post(`${API}/api/v1/me/guardian-invitations`, async ({ request }) => {
         body = (await request.json()) as Record<string, unknown>;
-        return HttpResponse.json({ success: true, data: {}, meta: {} }, { status: 201 });
+        return HttpResponse.json(
+          {
+            success: true,
+            data: {
+              id: "inv-1",
+              parent_id: null,
+              student_id: "stu-1",
+              relationship: "guardian",
+              state: "pending",
+              invited_phone: "+9779801234567",
+              expires_at: null,
+              accepted_at: null,
+              created_by: "stu-1",
+            },
+            meta: {},
+          },
+          { status: 201 },
+        );
       }),
     );
     await renderSignedIn(<ParentScreen />);

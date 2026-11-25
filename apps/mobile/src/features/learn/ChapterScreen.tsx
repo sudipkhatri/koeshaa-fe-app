@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { View } from "react-native";
 
-import { Chip, Header, ListRow, Screen, Text, subjectFill } from "@/components/ui";
+import { Chip, Header, ListRow, Screen, StateView, Text, subjectFill } from "@/components/ui";
 import { StatusBadge } from "./components/StatusBadge";
 import { cx } from "@/components/ui/cx";
 import { useLocale } from "@/lib/locale";
@@ -42,26 +42,34 @@ export function ChapterScreen({ chapterRef }: { chapterRef: string | string[] | 
         </View>
         <StatusBadge status="free" />
       </View>
-      <View className="gap-2">
-        {getTopics().map((topic) => (
-          <ListRow
-            key={topic.index}
-            title={localized(topic.title, locale)}
-            subtitle={localized(topic.detail, locale)}
-            icon={kindIcon[topic.kind]}
-            iconTone={kindTone[topic.kind]}
-            trailing={
-              <Chip variant="chip" label={t(kindLabel[topic.kind])} tone={kindTone[topic.kind]} />
-            }
-            onPress={() =>
-              router.push({
-                pathname: "/content/[ref]",
-                params: { ref: `${subject.id}:${chapter.index}:${topic.index}` },
-              })
-            }
-          />
-        ))}
-      </View>
+      {chapter.chapterId ? (
+        <StateView
+          kind="empty"
+          title={t("learn.contentSoonTitle")}
+          message={t("learn.contentSoonBody")}
+        />
+      ) : (
+        <View className="gap-2">
+          {getTopics().map((topic) => (
+            <ListRow
+              key={topic.index}
+              title={localized(topic.title, locale)}
+              subtitle={localized(topic.detail, locale)}
+              icon={kindIcon[topic.kind]}
+              iconTone={kindTone[topic.kind]}
+              trailing={
+                <Chip variant="chip" label={t(kindLabel[topic.kind])} tone={kindTone[topic.kind]} />
+              }
+              onPress={() =>
+                router.push({
+                  pathname: "/content/[ref]",
+                  params: { ref: `${subject.id}:${chapter.index}:${topic.index}` },
+                })
+              }
+            />
+          ))}
+        </View>
+      )}
     </Screen>
   );
 }

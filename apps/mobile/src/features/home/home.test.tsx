@@ -6,6 +6,10 @@ import { HomeScreen } from "./HomeScreen";
 
 jest.mock("expo-router", () => ({ router: jest.requireActual("@/test/router-mock").routerMock }));
 
+beforeEach(() => {
+  process.env.EXPO_PUBLIC_USE_MOCKS = "1";
+});
+
 describe("Home", () => {
   it("shows the loading skeleton first, then the content", async () => {
     await renderWithProviders(<HomeScreen />);

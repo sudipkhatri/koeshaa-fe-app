@@ -3,6 +3,7 @@ import { View } from "react-native";
 
 import { Button, Float, Mascot, Screen, Text } from "@/components/ui";
 import { useProfile } from "@/features/me/api";
+import { useSession } from "@/features/session";
 import { useLocale } from "@/lib/locale";
 
 import { Confetti } from "./components/Confetti";
@@ -10,14 +11,15 @@ import { Confetti } from "./components/Confetti";
 export function SuccessScreen() {
   const { t } = useLocale();
   const { data: profile } = useProfile();
+  const parent = useSession().signup.role === "parent";
   return (
     <Screen
       edges={["top", "bottom"]}
       footer={
         <Button
-          title={t("signup.pickMyClass")}
+          title={parent ? t("signup.goHome") : t("signup.pickMyClass")}
           size="lg"
-          onPress={() => router.replace("/onboarding/pick-class")}
+          onPress={() => router.replace(parent ? "/home" : "/onboarding/pick-class")}
         />
       }
     >
@@ -30,7 +32,7 @@ export function SuccessScreen() {
           {t("signup.successTitle", { name: profile?.name ?? "" })}
         </Text>
         <Text muted className="text-center">
-          {t("signup.successBody")}
+          {parent ? t("signup.parentSuccessBody") : t("signup.successBody")}
         </Text>
       </View>
     </Screen>

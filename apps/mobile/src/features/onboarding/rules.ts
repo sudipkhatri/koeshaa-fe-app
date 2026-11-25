@@ -8,6 +8,17 @@ export function kindOf(raw: string): ContactKind {
   return "user";
 }
 
+const MASKED = /[•*]/;
+
+/**
+ * Prefer the destination the API already masked. A raw address is never shown:
+ * the local mask is used instead.
+ */
+export function displayDestination(server: string, fallback: string): string {
+  const value = server.trim();
+  return value.length > 0 && value.length <= 80 && MASKED.test(value) ? value : fallback;
+}
+
 /** "a•••@x.com" or "+977 98••••21" so the code destination is shown without exposing it. */
 export function maskContact(raw: string, kind: ContactKind): string {
   const value = raw.trim();

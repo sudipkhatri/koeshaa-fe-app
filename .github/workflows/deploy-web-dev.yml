@@ -1,0 +1,128 @@
+name: Deploy Web Application - DEV
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set image tag
+        run: |
+          BUILD_NUMBER=$(date +%d%H%M)
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_TAG="DEV.${BUILD_NUMBER}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
+          echo "IMAGE_REPO=ghcr.io/${REPO_LOWER}" >> "$GITHUB_ENV"
+          echo "image_tag=${IMAGE_TAG}"
+
+      - name: Notify Discord (Start)
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then echo "Discord webhook not set; skip"; exit 0; fi
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          curl -fsS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"🚀 **Deploy Web (DEV) — ${{ github.event.repository.name }}**\\n- **${{ github.ref_name }}**\\n\\n🧾 Commit: \`${SHORT_SHA}\`\\n👤 **${{ github.actor }}**\\n\\n⏳ **STARTED**\"}"
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_REPO }}
+          tags: |
+            type=raw,value=${{ env.IMAGE_TAG }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./.docker/server/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+          target: runner
+          provenance: false
+          sbom: false
+          build-args: |
+            NEXT_PUBLIC_API_BASE_URL=${{ secrets.DEV_NEXT_PUBLIC_API_BASE_URL }}
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.5
+        env:
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        with:
+          host: ${{ secrets.DEV_SERVER_IP }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          envs: IMAGE_TAG
+          script: |
+            set -euo pipefail
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            cd "${{ secrets.DEV_WORK_DIR }}"
+            export IMAGE_TAG
+            echo "IMAGE_TAG=${IMAGE_TAG}"
+            echo "Stopping existing containers..."
+            docker compose down --remove-orphans || true
+            echo "Starting containers..."
+            docker compose up -d
+            for i in 1 2 3 4 5 6; do
+              echo "Health check attempt ${i}/6"
+              if docker compose ps --format json 2>/dev/null | grep -q '"Health":"healthy"'; then
+                echo "Containers healthy"
+                break
+              fi
+              if [ "$i" -eq 6 ]; then
+                echo "Health check failed"
+                docker compose ps
+                docker compose logs --tail=80
+                exit 1
+              fi
+              sleep 10
+            done
+            docker image prune -af --filter "until=72h" || true
+            echo "Deployment finished"
+
+      - name: Notify Discord (Success)
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then exit 0; fi
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          curl -fsS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"✅ **Deploy Web (DEV) — ${{ github.event.repository.name }}**\\n- **${{ github.ref_name }}**\\n\\n🧾 \`${SHORT_SHA}\`\\n👤 **${{ github.actor }}**\\n\\n**SUCCESS**\"}"
+
+      - name: Notify Discord (Failure)
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then exit 0; fi
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          curl -fsS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"❌ **Deploy Web (DEV) — ${{ github.event.repository.name }}**\\n- **${{ github.ref_name }}**\\n\\n🧾 \`${SHORT_SHA}\`\\n👤 **${{ github.actor }}**\\n\\n**FAILED**\"}"

@@ -38,10 +38,17 @@ export function createQueryClient(options: { retry?: boolean } = {}): QueryClien
 export const keys = {
   me: ["me"] as const,
   devices: ["me", "devices"] as const,
+  children: ["me", "children"] as const,
+  childDevices: (childId: string) => ["me", "children", childId, "devices"] as const,
+  invitations: ["me", "guardian-invitations"] as const,
+  notifications: ["notifications"] as const,
+  unreadCount: ["notifications", "unread"] as const,
   enrollments: ["me", "enrollments"] as const,
   dismissals: ["me", "prompts", "dismissals"] as const,
   academicYear: ["catalog", "academic-year"] as const,
   grades: ["catalog", "grade-levels"] as const,
   pool: (grade: string, stream: string | null) => ["catalog", "pool", grade, stream] as const,
+  freeSlice: (grade: string, stream: string | null) =>
+    ["catalog", "free-slice", grade, stream] as const,
   page: (slug: string, locale: string) => ["site-pages", slug, locale] as const,
 };

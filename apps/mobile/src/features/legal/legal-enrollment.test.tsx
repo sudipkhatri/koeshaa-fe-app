@@ -6,7 +6,17 @@ import { LegalScreen } from "@/features/me/LegalScreen";
 import { defaultPreferences } from "@/lib/preferences";
 import { SessionRoot } from "@/features/session";
 import { AppProviders } from "@/lib/providers";
-import { API, errorBody, memoryTokenStore, testCore, tokensBody } from "@/test/api";
+import {
+  API,
+  currentAcademicYearHandler,
+  enrollmentsHandler,
+  enrollmentFixture,
+  errorBody,
+  gradeLevelsHandler,
+  memoryTokenStore,
+  testCore,
+  tokensBody,
+} from "@/test/api";
 import { renderWithProviders } from "@/test/render";
 import { server } from "@/test/server";
 
@@ -23,6 +33,8 @@ beforeAll(() => {
 beforeEach(() =>
   server.use(
     http.post(`${API}/api/v1/auth/refresh`, () => HttpResponse.json(tokensBody("a2", "r2"))),
+    currentAcademicYearHandler(),
+    gradeLevelsHandler(),
   ),
 );
 afterEach(() => server.resetHandlers());
@@ -93,26 +105,17 @@ describe("legal pages", () => {
 describe("enrollment", () => {
   it("reads the class and its subjects", async () => {
     server.use(
-      http.get(`${API}/api/v1/catalog/grade-levels`, () =>
-        HttpResponse.json({ success: true, data: [{ id: "g7", code: "c7" }], meta: {} }),
-      ),
-      http.get(`${API}/api/v1/me/enrollments`, () =>
-        HttpResponse.json({
-          success: true,
-          data: {
-            current: [
-              {
-                id: "e1",
-                state: "confirmed",
-                grade_level_id: "g7",
-                stream_id: null,
-                subjects: [{ code: "english", name: "English", kind: "optional" }],
-              },
-            ],
+      enrollmentsHandler([
+        enrollmentFixture({}, [
+          {
+            subject_id: "s1",
+            code: "english",
+            name: "English",
+            kind: "optional",
+            added_at: "2026-01-01T00:00:00Z",
           },
-          meta: {},
-        }),
-      ),
+        ]),
+      ]),
     );
     const { result } = await renderHook(() => useClassInfo(), {
       wrapper: wrapperFor(await signedInCore()),
@@ -126,11 +129,7 @@ describe("enrollment", () => {
   });
 
   it("is null when no class is picked yet", async () => {
-    server.use(
-      http.get(`${API}/api/v1/me/enrollments`, () =>
-        HttpResponse.json({ success: true, data: { current: [] }, meta: {} }),
-      ),
-    );
+    server.use(enrollmentsHandler([]));
     const { result } = await renderHook(() => useClassInfo(), {
       wrapper: wrapperFor(await signedInCore()),
     });

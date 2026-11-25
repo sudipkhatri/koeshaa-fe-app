@@ -72,7 +72,7 @@ describe("sign in against the API", () => {
     await waitFor(() =>
       expect(routerMock.push).toHaveBeenCalledWith({
         pathname: "/onboarding/code",
-        params: { to: "+97798•••••67", child: "1", next: "signed-in" },
+        params: { to: "+97798•••••67", child: "1", next: "signed-in", step: "code" },
       }),
     );
   });
@@ -106,7 +106,86 @@ describe("sign in against the API", () => {
   it("says there is no connection and keeps the form", async () => {
     server.use(http.post(`${API}/api/v1/auth/sign-in`, () => HttpResponse.error()));
     await submit();
-    expect(await screen.findByText(/No connection/)).toBeTruthy();
+    expect(
+      await screen.findByText("No connection. Check your internet and try again."),
+    ).toBeTruthy();
+    expect(screen.getByRole("button", { name: "No connection" })).toBeTruthy();
     expect(screen.getByLabelText("Password").props.value).toBe("correct-horse");
+  });
+
+  it("sends a Nepal mobile in the backend's form", async () => {
+    let identifier = "";
+    server.use(
+      http.post(`${API}/api/v1/auth/sign-in`, async ({ request }) => {
+        identifier = ((await request.json()) as { identifier: string }).identifier;
+        return HttpResponse.json({
+          success: true,
+          data: { tokens: tokensBody("a1", "r1").data, challenge: null },
+          meta: {},
+        });
+      }),
+    );
+    await renderWithProviders(<SignInScreen />, undefined, testCore(memoryTokenStore()));
+    await fireEvent.changeText(screen.getByLabelText("Phone, email or username"), "9812345678");
+    await fireEvent.changeText(screen.getByLabelText("Password"), "correct-horse");
+    await fireEvent.press(screen.getByRole("button", { name: "Sign in" }));
+    await waitFor(() => expect(identifier).toBe("+9779812345678"));
+  });
+
+  it("does not put an authenticator setup key in the route", async () => {
+    server.use(
+      http.post(`${API}/api/v1/auth/sign-in`, () =>
+        HttpResponse.json({
+          success: true,
+          data: {
+            tokens: null,
+            challenge: {
+              challenge: "c".repeat(20),
+              step: "mfa_setup",
+              sent_to: null,
+              expires_at: "2026-01-01T00:00:00Z",
+              authenticator_secret: "SECRET-KEY-ONCE",
+            },
+          },
+          meta: {},
+        }),
+      ),
+    );
+    await submit();
+    await waitFor(() => expect(routerMock.push).toHaveBeenCalled());
+    expect(JSON.stringify(routerMock.push.mock.calls)).not.toContain("SECRET-KEY-ONCE");
+    expect(routerMock.push).toHaveBeenCalledWith(
+      expect.objectContaining({
+        params: expect.objectContaining({ step: "mfa_setup", next: "signed-in" }),
+      }),
+    );
+  });
+
+  it("does not put a raw code destination in the route", async () => {
+    server.use(
+      http.post(`${API}/api/v1/auth/sign-in`, () =>
+        HttpResponse.json({
+          success: true,
+          data: {
+            tokens: null,
+            challenge: {
+              challenge: "c".repeat(20),
+              step: "code",
+              sent_to: "student@example.com",
+              expires_at: "2026-01-01T00:00:00Z",
+            },
+          },
+          meta: {},
+        }),
+      ),
+    );
+    await submit();
+    await waitFor(() => expect(routerMock.push).toHaveBeenCalled());
+    expect(JSON.stringify(routerMock.push.mock.calls)).not.toContain("student@example.com");
+    expect(routerMock.push).toHaveBeenCalledWith(
+      expect.objectContaining({
+        params: expect.objectContaining({ to: "", step: "code" }),
+      }),
+    );
   });
 });

@@ -20,15 +20,20 @@ With `EXPO_PUBLIC_USE_MOCKS=1` (dev builds only): password `keoshaa123`, code `1
 
 ## What is real and what is demo data
 
-| Area                                                                                                    | Source                                                                                   |
-| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Sign in (new-device code, lock, rate limits), refresh, sign out                                         | API (`/auth/*`)                                                                          |
-| Sign up (student), forgot and reset password, consents                                                  | API; consent versions from the terms and privacy pages, else the backend default         |
-| Name, devices (list, sign out one), second-device notice, parent invite, close account, change password | API (`/me/*`)                                                                            |
-| Class and stream pick, subjects                                                                         | API (`/me/enrollments`, `/catalog`); subjects are the student's enrollment subjects      |
-| Terms and Privacy text                                                                                  | API (`/site-pages/{slug}`), summary text until staff publish a page                      |
-| Chapters, lessons, content, progress, streak, daily goal, answers                                       | Demo mode only; real students see "coming soon" or no element until the backend has them |
-| Search                                                                                                  | Demo mode only; real students see "Search is coming soon"                                |
+| Area                                                                                                    | Source                                                                                                               |
+| ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Sign in (new-device code, authenticator, one-time recovery codes, lock, rate limits), refresh, sign out | API (`/auth/*`)                                                                                                      |
+| Sign up (student or parent), forgot and reset password, support call-back, consents                     | API; consent versions from the terms and privacy pages, else the backend default                                     |
+| Name, devices (list, sign out one), second-device notice, parent invite, close account, change password | API (`/me/*`)                                                                                                        |
+| Parent children list, add child, child devices / password / close                                       | API (`/me/children*`); class/stream on the list and parent→child invite are not yet                                  |
+| Alerts inbox (list, mark read, mark all read)                                                           | API (`/notifications*`); title/body come from the server                                                             |
+| Guardian invite (student→parent), accept / decline (parent)                                             | API (`/me/guardian-invitations*`, `/me/guardianships/{id}`); student name on accept missing                          |
+| Class, stream, optional subjects, enrol confirm                                                         | API (`/me/enrollments*`, catalog pool); parent phone on confirm is optional                                          |
+| Enrolment manage (class/subjects, self-serve fix, ask for change)                                       | API (`window_open` / `changes_left`, corrections via pick-class, `change-requests`); history list not on student API |
+| Subjects, free chapter names                                                                            | API (`/me/enrollments`, `/catalog`); lesson bodies are still "coming soon"                                           |
+| Terms and Privacy text                                                                                  | API (`/site-pages/{slug}`), summary text until staff publish a page                                                  |
+| Lesson bodies, progress, streak, daily goal, answers                                                    | Demo mode only; a real chapter shows "coming soon" until the backend has the lesson                                  |
+| Search                                                                                                  | Demo mode only; real students see "Search is coming soon"                                                            |
 
 Sessions: the refresh token lives in `expo-secure-store`, the access token in memory. One refresh runs at a time for all requests; a refresh rejected with `TOKEN_INVALID`, `SESSION_ENDED` or `SIGNED_OUT_FOR_DEVICE` signs the person out, a network failure does not.
 

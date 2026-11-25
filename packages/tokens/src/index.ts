@@ -1,27 +1,39 @@
 /**
- * Design tokens shared by the web and mobile apps ("Playful Indigo"): one source for colours,
+ * Design tokens shared by the web and mobile apps. Brand colours are sampled from the
+ * Keoshaa mark: cream field, teal letter, gold stroke. One source for colours,
  * spacing, radii, type and shadows. `scripts/generate.ts` turns them into the web `@theme` and the
  * NativeWind theme; `src/theme.test.ts` fails when a generated file drifts.
  */
 
 const light = {
-  background: "#F5F6FB",
-  surface: "#FFFFFF",
-  surfaceMuted: "#EEF0F8",
-  text: "#1B1F3B",
-  textMuted: "#5A6080",
-  border: "#E6E8F2",
-  primary: "#4F46E5",
-  primaryPressed: "#4338CA",
+  background: "#F6EBD9",
+  surface: "#FFFCF8",
+  surfaceMuted: "#EFE4D2",
+  /** White page behind the public web, from the design boards. */
+  canvas: "#FFFFFF",
+  /** Quiet section fill on the public web. */
+  mist: "#F9FBFA",
+  /** Hairline on white, from the design boards. */
+  line: "#E8EFED",
+  text: "#023330",
+  textMuted: "#3E6F6C",
+  /** Body copy on the public pages. */
+  inkSoft: "#41615E",
+  border: "#E4D5BE",
+  /** Footer field from the landing board. */
+  footer: "#012421",
+  footerText: "#9DBAB6",
+  primary: "#056B67",
+  primaryPressed: "#044E4B",
   onPrimary: "#FFFFFF",
-  primaryTint: "#E9E8FE",
-  onPrimaryTint: "#4338CA",
-  /** Intentionally equal to `primary` in light: the hero band is its own role so it can diverge. */
-  hero: "#4F46E5",
-  reward: "#FFC83D",
-  onReward: "#4A3500",
-  rewardTint: "#FFF0C2",
-  onRewardTint: "#4A3500",
+  primaryTint: "#E7F3F1",
+  onPrimaryTint: "#056B67",
+  /** The teal of the mark. White text on it clears 4.5:1. */
+  hero: "#056B67",
+  reward: "#E9AB34",
+  onReward: "#3A2A04",
+  rewardTint: "#F8E7C0",
+  onRewardTint: "#3A2A04",
   success: "#10B981",
   successTint: "#D9F6EA",
   onSuccessTint: "#065F46",
@@ -32,18 +44,18 @@ const light = {
   onDangerFill: "#FFFFFF",
   skyTint: "#E0F2FE",
   onSkyTint: "#075985",
-  grapeTint: "#EDE8FE",
-  onGrapeTint: "#5B21B6",
+  grapeTint: "#F8E7C0",
+  onGrapeTint: "#3A2A04",
   onSubject: "#FFFFFF",
-  mascotEyes: "#14173A",
+  mascotEyes: "#023330",
   overlay: "rgba(10, 16, 40, 0.5)",
   /** Video placeholder gradient: intentionally identical in light and dark (repeated in `dark`). */
-  videoFrom: "#312E81",
-  videoTo: "#4F46E5",
+  videoFrom: "#033E3C",
+  videoTo: "#056B67",
   /** Saturated fill behind white text and icons (tiles, bands). */
   subject: {
     science: "#047857",
-    maths: "#4F46E5",
+    maths: "#1D4E89",
     english: "#C2410C",
     nepali: "#E11D48",
     social: "#0369A1",
@@ -52,34 +64,60 @@ const light = {
   /** Same hue as readable text or icon on a tint. */
   subjectText: {
     science: "#047857",
-    maths: "#4338CA",
+    maths: "#1D4E89",
     english: "#C2410C",
     nepali: "#BE123C",
     social: "#0369A1",
     health: "#6D28D9",
+  },
+  /** Staff and school portal palette, from the admin design boards. */
+  admin: {
+    page: "#F4F7F6",
+    surface: "#FFFFFF",
+    subtle: "#FAFBFB",
+    border: "#DDE5E3",
+    rule: "#EEF2F1",
+    ink: "#0E2E2B",
+    soft: "#456B68",
+    faint: "#7A9794",
+    hint: "#9FBAB6",
+    quiet: "#3F5B58",
+    onTint: "#04524F",
+    danger: "#BE123C",
+    note: "#FFF8EC",
+    noteLine: "#F0DFC0",
+    dashed: "#BFD0CC",
+    dangerLine: "#FBD0D8",
+    dangerSoft: "#FFF5F6",
   },
 };
 
 export type Palette = typeof light;
 
 const dark: Palette = {
-  background: "#0F1222",
-  surface: "#1A1E35",
-  surfaceMuted: "#232845",
-  text: "#F1F2FF",
-  textMuted: "#A9AECB",
-  border: "#2B3050",
-  primary: "#818CF8",
-  primaryPressed: "#6F7BF0",
-  onPrimary: "#12153A",
-  primaryTint: "#2A2E66",
-  onPrimaryTint: "#A5B0FF",
-  /** Darker than `primary` in dark so white text on the band keeps contrast. */
-  hero: "#4338CA",
-  reward: "#FFC83D",
-  onReward: "#4A3500",
-  rewardTint: "#4A3A0E",
-  onRewardTint: "#FFDC80",
+  background: "#072421",
+  surface: "#0E3330",
+  surfaceMuted: "#143E3A",
+  canvas: "#0E3330",
+  mist: "#143E3A",
+  line: "#1E4A46",
+  text: "#F6EBD9",
+  textMuted: "#C9DDD6",
+  inkSoft: "#C9DDD6",
+  border: "#1E4A46",
+  footer: "#012421",
+  footerText: "#9DBAB6",
+  primary: "#0A7A74",
+  primaryPressed: "#056B67",
+  onPrimary: "#FFFFFF",
+  primaryTint: "#143E3A",
+  onPrimaryTint: "#B7E4DF",
+  /** Same teal as the mark so white text on the band keeps contrast. */
+  hero: "#056B67",
+  reward: "#E9AB34",
+  onReward: "#3A2A04",
+  rewardTint: "#3A2A04",
+  onRewardTint: "#F8E7C0",
   success: "#34D399",
   successTint: "#0F3D31",
   onSuccessTint: "#6EE7B7",
@@ -90,17 +128,17 @@ const dark: Palette = {
   onDangerFill: "#4C0519",
   skyTint: "#0C3550",
   onSkyTint: "#7DD3FC",
-  grapeTint: "#35296E",
-  onGrapeTint: "#D4C8FF",
+  grapeTint: "#3A2A04",
+  onGrapeTint: "#F8E7C0",
   onSubject: "#FFFFFF",
-  mascotEyes: "#14173A",
+  mascotEyes: "#023330",
   overlay: "rgba(10, 16, 40, 0.5)",
   // Same as light on purpose (see above); onSubject, mascotEyes and overlay repeat for the same reason.
-  videoFrom: "#312E81",
-  videoTo: "#4F46E5",
+  videoFrom: "#033E3C",
+  videoTo: "#056B67",
   subject: {
     science: "#065F46",
-    maths: "#4338CA",
+    maths: "#1E3A6E",
     english: "#9A3412",
     nepali: "#BE123C",
     social: "#075985",
@@ -108,11 +146,30 @@ const dark: Palette = {
   },
   subjectText: {
     science: "#6EE7B7",
-    maths: "#A5B4FC",
+    maths: "#A9C4F0",
     english: "#FDBA74",
     nepali: "#FDA4AF",
     social: "#7DD3FC",
     health: "#C4B5FD",
+  },
+  admin: {
+    page: "#072421",
+    surface: "#0E3330",
+    subtle: "#123A36",
+    border: "#1E4A46",
+    rule: "#18403C",
+    ink: "#E6F0EE",
+    soft: "#A9C4C0",
+    faint: "#86A6A2",
+    hint: "#6E8F8B",
+    quiet: "#C9DDD6",
+    onTint: "#B7E4DF",
+    danger: "#FDA4AF",
+    note: "#3A2A04",
+    noteLine: "#5A4310",
+    dashed: "#2C5A55",
+    dangerLine: "#6B2436",
+    dangerSoft: "#3A1621",
   },
 };
 
@@ -154,6 +211,8 @@ export const size = {
 
 /** Sorted by size; names are roles from the prototype. */
 export const fontSize = {
+  badge: 10,
+  tag: 11,
   micro: 12,
   caption: 13,
   small: 14,
@@ -184,7 +243,7 @@ export const fontFamily = {
 
 /** Soft two-layer card shadow from the prototype; the dark scheme uses a stronger black. */
 export const shadow = {
-  light: "0 2px 0 rgba(30, 34, 70, 0.06), 0 8px 24px rgba(30, 34, 70, 0.06)",
+  light: "0 2px 0 rgba(2, 51, 48, 0.06), 0 8px 24px rgba(2, 51, 48, 0.08)",
   dark: "0 2px 0 rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3)",
 } as const;
 

@@ -6,3 +6,4 @@
 | [0002](0002-generated-api-client.md)          | API types generated from the backend's OpenAPI schema     | Accepted |
 | [0003](0003-session-tokens-web-and-mobile.md) | Where each app keeps its session tokens                   | Accepted |
 | [0004](0004-nativewind-token-theme.md)        | NativeWind 4 styled from generated token themes           | Accepted |
+| [0005](0005-web-docker-ghcr-vps.md)           | Web deploy via Docker, GHCR and VPS SSH                   | Accepted |

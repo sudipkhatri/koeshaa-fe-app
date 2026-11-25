@@ -19,11 +19,12 @@ import {
 } from "@/components/ui";
 import { isLockedError, resetMockAuth, useSignIn } from "@/features/auth/api";
 import { isMockMode } from "@/lib/config";
-import { errorMessage, retryAfterSeconds } from "@/lib/errors";
+import { errorMessage, isNetworkError, retryAfterSeconds } from "@/lib/errors";
 import { useLocale } from "@/lib/locale";
 import { useToast } from "@/lib/toast";
 
 import { IdentifierField } from "./components/IdentifierField";
+import { displayDestination, kindOf, maskContact } from "./rules";
 import { useCountdownUntil } from "./useCountdown";
 
 /** The messages `signInSchema` can produce, as catalog keys. */
@@ -52,12 +53,17 @@ export function SignInScreen() {
           router.replace("/home");
           toast(t("auth.welcomeToast", { name: result.name }));
         } else {
+          const username = detectIdentifier(values.identifier) === "username";
+          const localMask = username
+            ? ""
+            : maskContact(values.identifier, kindOf(values.identifier));
           router.push({
             pathname: "/onboarding/code",
             params: {
-              to: result.sentTo,
-              child: detectIdentifier(values.identifier) === "username" ? "1" : "0",
+              to: displayDestination(result.sentTo, localMask),
+              child: username ? "1" : "0",
               next: "signed-in",
+              step: result.step,
             },
           });
         }
@@ -121,7 +127,12 @@ export function SignInScreen() {
       scroll
       edges={["top", "bottom"]}
       footer={
-        <Button title={t("auth.signIn")} size="lg" loading={signIn.isPending} onPress={submit} />
+        <Button
+          title={isNetworkError(signIn.error) ? t("common.noConnection") : t("auth.signIn")}
+          size="lg"
+          loading={signIn.isPending}
+          onPress={submit}
+        />
       }
     >
       <Header title={t("auth.welcomeBack")} />

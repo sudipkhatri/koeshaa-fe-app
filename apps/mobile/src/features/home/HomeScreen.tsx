@@ -29,6 +29,8 @@ import { isMockMode } from "@/lib/config";
 import { useLocale } from "@/lib/locale";
 import { useTheme } from "@/lib/theme";
 
+import { ParentHomeScreen } from "@/features/parent";
+
 import { ContinueHero } from "./components/ContinueHero";
 import { DailyGoal } from "./components/DailyGoal";
 import { DevSheet } from "./DevSheet";
@@ -81,6 +83,10 @@ export function HomeScreen() {
     return () => clearTimeout(timer);
   }, [forced]);
 
+  if (profile.data?.role === "parent") {
+    return <ParentHomeScreen />;
+  }
+
   return (
     <Screen edges={["top"]} className="px-0 pt-0">
       <View className="flex-row items-center gap-3 px-4 pt-2">
@@ -120,7 +126,7 @@ export function HomeScreen() {
       ) : (
         <ScrollView contentContainerClassName="px-4 pb-6 pt-5">
           <View className="mb-4 flex-row flex-wrap gap-2">
-            <ClassPill onPress={() => router.push("/onboarding/pick-class")} />
+            <ClassPill onPress={() => router.push("/me/enrolment")} />
             {isMockMode() ? (
               <Chip
                 label={t("home.streak", { n: formatNumber(STREAK_DAYS) })}
@@ -128,9 +134,6 @@ export function HomeScreen() {
                 icon="flame"
                 accessibilityLabel={t("home.streakLabel", { n: formatNumber(STREAK_DAYS) })}
               />
-            ) : null}
-            {profile.data?.role === "parent" ? (
-              <Chip label={t("home.parentView")} tone="grape" />
             ) : null}
           </View>
 

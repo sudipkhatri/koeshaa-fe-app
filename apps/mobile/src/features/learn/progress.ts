@@ -9,6 +9,8 @@ export function subjectPercent(subject: Subject): number {
 export function chapterStatus(subject: Subject, index: number): ChapterStatus {
   if (index < subject.doneCount) return "done";
   if (index === subject.doneCount && subject.currentPercent > 0) return "inProgress";
+  const chapter = subject.chapters[index];
+  if (chapter?.chapterId) return "free";
   return index >= FREE_CHAPTERS ? "locked" : "free";
 }
 

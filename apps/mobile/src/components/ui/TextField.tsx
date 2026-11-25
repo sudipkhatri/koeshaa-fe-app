@@ -16,6 +16,9 @@ interface TextFieldProps extends Pick<
   | "placeholder"
   | "keyboardType"
   | "autoComplete"
+  | "autoCapitalize"
+  | "autoCorrect"
+  | "maxLength"
   | "returnKeyType"
   | "onSubmitEditing"
 > {

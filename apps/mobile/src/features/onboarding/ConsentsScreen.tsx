@@ -4,9 +4,10 @@ import { Pressable, View } from "react-native";
 
 import { Banner, Button, Header, Icon, LinkButton, Screen, Text } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
-import { useRegisterStudent } from "@/features/auth/api";
+import { useRegisterParent, useRegisterStudent } from "@/features/auth/api";
 import { LegalSheet } from "@/features/me/LegalScreen";
-import { errorMessage } from "@/lib/errors";
+import { useSession } from "@/features/session";
+import { errorMessage, isNetworkError } from "@/lib/errors";
 import { useLocale } from "@/lib/locale";
 import { useTheme } from "@/lib/theme";
 
@@ -62,7 +63,10 @@ function Consent({
 
 export function ConsentsScreen() {
   const { t, formatClock } = useLocale();
-  const register = useRegisterStudent();
+  const { signup } = useSession();
+  const registerStudent = useRegisterStudent();
+  const registerParent = useRegisterParent();
+  const register = signup.role === "parent" ? registerParent : registerStudent;
   const [terms, setTerms] = useState(false);
   const [privacy, setPrivacy] = useState(false);
   const [doc, setDoc] = useState<Doc | null>(null);
@@ -72,7 +76,9 @@ export function ConsentsScreen() {
       edges={["top", "bottom"]}
       footer={
         <Button
-          title={t("signup.agreeButton")}
+          title={
+            isNetworkError(register.error) ? t("common.noConnection") : t("signup.agreeButton")
+          }
           size="lg"
           disabled={!(terms && privacy)}
           loading={register.isPending}

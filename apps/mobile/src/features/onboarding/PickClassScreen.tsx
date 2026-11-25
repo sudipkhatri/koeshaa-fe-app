@@ -4,9 +4,11 @@ import { Pressable, View } from "react-native";
 
 import { Banner, Button, Header, Screen, StateView, Text } from "@/components/ui";
 import { cx } from "@/components/ui/cx";
-import { useClassInfo, usePickClass } from "@/features/enrollment/api";
+import { useClassInfo, useStartEnrollment } from "@/features/enrollment/api";
 import { errorMessage, isNetworkError } from "@/lib/errors";
 import { useLocale } from "@/lib/locale";
+
+import { continueAfterDraft } from "./enrol-nav";
 
 const CLASSES = Array.from({ length: 12 }, (_, i) => i + 1);
 const STREAM_FROM = 11;
@@ -15,7 +17,7 @@ const ROWS = [CLASSES.slice(0, 4), CLASSES.slice(4, 8), CLASSES.slice(8, 12)];
 export function PickClassScreen() {
   const { t, formatNumber, formatClock } = useLocale();
   const current = useClassInfo();
-  const pick = usePickClass();
+  const start = useStartEnrollment();
   const [chosen, setChosen] = useState<number | null>(null);
   const cls = chosen ?? current.data?.grade ?? 0;
 
@@ -35,7 +37,10 @@ export function PickClassScreen() {
     if (cls >= STREAM_FROM) {
       return router.push({ pathname: "/onboarding/pick-stream", params: { grade: String(cls) } });
     }
-    pick.mutate({ grade: cls, stream: null }, { onSuccess: () => router.replace("/home") });
+    start.mutate(
+      { grade: cls, stream: null },
+      { onSuccess: (draft) => continueAfterDraft(draft, { grade: cls, stream: null }) },
+    );
   };
   return (
     <Screen
@@ -46,7 +51,7 @@ export function PickClassScreen() {
           title={t("common.continue")}
           size="lg"
           disabled={cls === 0 || current.isPending}
-          loading={pick.isPending}
+          loading={start.isPending}
           onPress={next}
         />
       }
@@ -55,9 +60,9 @@ export function PickClassScreen() {
       <Text muted className="mb-4 mt-2">
         {t("pick.classSub")}
       </Text>
-      {pick.error ? (
+      {start.error ? (
         <Banner tone="danger" className="mb-3">
-          {errorMessage(pick.error, t, formatClock)}
+          {errorMessage(start.error, t, formatClock)}
         </Banner>
       ) : null}
       <View className="gap-3">
@@ -71,7 +76,7 @@ export function PickClassScreen() {
                 accessibilityState={{ selected: cls === n }}
                 onPress={() => {
                   setChosen(n);
-                  pick.reset();
+                  start.reset();
                 }}
                 className={cx(
                   "h-16 flex-1 items-center justify-center rounded-cell border-2",

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { View } from "react-native";
 
 import { Button, Header, Icon, Screen, Text } from "@/components/ui";
+import { useSession } from "@/features/session";
 import { useLocale } from "@/lib/locale";
 import { useTheme } from "@/lib/theme";
 
@@ -11,6 +12,7 @@ import { OptionCard } from "./components/OptionCard";
 export function WhoScreen() {
   const { t } = useLocale();
   const { colors } = useTheme();
+  const { beginSignup } = useSession();
   const [role, setRole] = useState<"student" | "parent">("student");
   const lead = (name: "cap" | "heart") => (
     <View className="h-14 w-14 items-center justify-center rounded-cell bg-surface">
@@ -25,7 +27,10 @@ export function WhoScreen() {
         <Button
           title={t("common.continue")}
           size="lg"
-          onPress={() => router.push("/onboarding/welcome")}
+          onPress={() => {
+            beginSignup(role);
+            router.push("/onboarding/welcome");
+          }}
         />
       }
     >

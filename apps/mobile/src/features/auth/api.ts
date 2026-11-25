@@ -1,18 +1,29 @@
 import { useMutation } from "@tanstack/react-query";
-import * as Device from "expo-device";
 
 import { ApiError } from "@keoshaa/core";
 
 import { useApi } from "@/features/session/use-api";
-import { currentConsentVersions } from "@/features/legal/api";
-import { useSession } from "@/features/session";
+import { useSession, type AuthStep } from "@/features/session";
 import { checkSignIn, isCorrectCode } from "@/features/onboarding/mock";
 
-export type SignInResult =
-  { kind: "signedIn"; name: string } | { kind: "needsCode"; challenge: string; sentTo: string };
+import { deviceName } from "./device";
+import { identifierForApi } from "./identifier";
+import { apiError, requireAccessToken, signupFields } from "./request";
 
-const fail = (status: number, code: string, retryAfterSeconds?: number) =>
-  new ApiError(status, { code, message: code }, { retryAfterSeconds });
+export type SignInResult =
+  | { kind: "signedIn"; name: string }
+  | { kind: "needsCode"; challenge: string; sentTo: string; step: AuthStep };
+
+export interface CodeSent {
+  sentTo: string;
+  expiresIn: number;
+}
+
+/** Sign-in step 2. `recoveryCodes` is set only after authenticator setup and is not stored. */
+export interface VerifiedSignIn {
+  name: string;
+  recoveryCodes: string[];
+}
 
 /** Mock sign-in lock: five wrong passwords pause sign in for 15 minutes (demo only). */
 let mockWrong = 0;
@@ -25,21 +36,21 @@ export function resetMockAuth(): void {
   mockCodeTries = 0;
 }
 
-async function mockSignIn(id: string, password: string): Promise<SignInResult> {
-  const left = Math.ceil((mockLockedUntil - Date.now()) / 1000);
-  if (left > 0) throw fail(429, "SIGN_IN_LOCKED", left);
-  const outcome = checkSignIn(id, password);
+async function mockSignIn(identifier: string, password: string): Promise<SignInResult> {
+  const secondsRemaining = Math.ceil((mockLockedUntil - Date.now()) / 1000);
+  if (secondsRemaining > 0) throw apiError(429, "SIGN_IN_LOCKED", secondsRemaining);
+  const outcome = checkSignIn(identifier, password);
   if (outcome.status === "missing" || outcome.status === "wrong") {
     if (++mockWrong >= 5) {
       mockWrong = 0;
       mockLockedUntil = Date.now() + 15 * 60_000;
-      throw fail(429, "SIGN_IN_LOCKED", 15 * 60);
+      throw apiError(429, "SIGN_IN_LOCKED", 15 * 60);
     }
-    throw fail(401, "INVALID_CREDENTIALS");
+    throw apiError(401, "INVALID_CREDENTIALS");
   }
   mockWrong = 0;
   if (outcome.status === "signedIn") return { kind: "signedIn", name: "Aarav" };
-  return { kind: "needsCode", challenge: "mock", sentTo: outcome.maskedTo };
+  return { kind: "needsCode", challenge: "mock", sentTo: outcome.maskedTo, step: "code" };
 }
 
 export function useSignIn() {
@@ -58,10 +69,11 @@ export function useSignIn() {
           });
         return result;
       }
+      const identifier = identifierForApi(input.identifier);
       const deviceId = await session.core.getDeviceId();
       const { data } = await api.POST("/api/v1/auth/sign-in", {
         body: {
-          identifier: input.identifier.trim(),
+          identifier,
           password: input.password,
           device_id: deviceId,
           device_name: deviceName(),
@@ -73,43 +85,49 @@ export function useSignIn() {
         return { kind: "signedIn", name: body.tokens.user.name };
       }
       if (body?.challenge) {
+        const step = toAuthStep(body.challenge.step);
         session.setFlow({
-          identifier: input.identifier.trim(),
+          identifier,
           challenge: body.challenge.challenge,
           sentTo: body.challenge.sent_to ?? "",
+          step,
+          setupSecret: step === "mfa_setup" ? (body.challenge.authenticator_secret ?? null) : null,
+          code: "",
         });
         return {
           kind: "needsCode",
           challenge: body.challenge.challenge,
           sentTo: body.challenge.sent_to ?? "",
+          step,
         };
       }
-      throw fail(500, "HTTP_500");
+      throw apiError(500, "HTTP_500");
     },
   });
 }
 
-/** New-device sign-in, step 2: the code that was sent to the account's contact. */
+/** Sign-in step 2: a device code, an authenticator code, or a recovery code. */
 export function useVerifySignIn() {
   const api = useApi();
   const session = useSession();
   return useMutation({
-    mutationFn: async (code: string): Promise<string> => {
+    mutationFn: async (code: string): Promise<VerifiedSignIn> => {
       if (!api) {
         if (!isCorrectCode(code)) {
-          if (++mockCodeTries >= 3) throw fail(401, "CHALLENGE_EXPIRED");
-          throw fail(400, "INVALID_CODE");
+          if (++mockCodeTries >= 3) throw apiError(401, "CHALLENGE_EXPIRED");
+          throw apiError(400, "INVALID_CODE");
         }
         await session.signIn(null);
-        return "Aarav";
+        return { name: "Aarav", recoveryCodes: [] };
       }
       const { data } = await api.POST("/api/v1/auth/sign-in/verify", {
         body: { challenge: session.flow.challenge ?? "", code },
       });
-      const tokens = data?.data.tokens;
-      if (!tokens) throw fail(500, "HTTP_500");
+      const tokens = requireAccessToken(data?.data.tokens);
+      const recoveryCodes = (tokens.recovery_codes ?? []).filter((code) => code.length > 0);
       await session.signIn(tokens);
-      return tokens.user.name;
+      session.setFlow({ setupSecret: null, challenge: null });
+      return { name: tokens.user.name, recoveryCodes };
     },
   });
 }
@@ -119,12 +137,23 @@ export function useRequestCode() {
   const api = useApi();
   const session = useSession();
   return useMutation({
-    mutationFn: async (input: { purpose: "signup" | "reset"; identifier: string }) => {
-      session.setFlow({ identifier: input.identifier.trim(), challenge: null, code: "" });
-      if (!api) return;
-      await api.POST("/api/v1/auth/codes", {
-        body: { purpose: input.purpose, identifier: input.identifier.trim() },
+    mutationFn: async (input: {
+      purpose: "signup" | "reset";
+      identifier: string;
+    }): Promise<CodeSent> => {
+      const identifier = identifierForApi(input.identifier);
+      session.setFlow({
+        identifier,
+        challenge: null,
+        code: "",
+        step: "code",
+        setupSecret: null,
       });
+      if (!api) return { sentTo: "", expiresIn: 60 };
+      const { data } = await api.POST("/api/v1/auth/codes", {
+        body: { purpose: input.purpose, identifier },
+      });
+      return { sentTo: data?.data.sent_to ?? "", expiresIn: data?.data.expires_in ?? 60 };
     },
   });
 }
@@ -143,23 +172,13 @@ export function useRegisterStudent() {
         return;
       }
       const { signup, flow } = session;
-      const versions = await currentConsentVersions(api);
       const { data } = await api.POST("/api/v1/auth/register/student", {
         body: {
-          name: signup.name.trim(),
+          ...(await signupFields(api, signup, flow.code, await session.core.getDeviceId())),
           date_of_birth: isoDate(signup.year, signup.month, signup.day),
-          identifier: signup.contact.trim(),
-          code: flow.code,
-          password: signup.password,
-          consents: {
-            terms_version: versions.termsVersion,
-            privacy_version: versions.privacyVersion,
-          },
-          device_id: await session.core.getDeviceId(),
-          device_name: deviceName(),
         },
       });
-      await session.signIn(data?.data ?? null);
+      await session.signIn(requireAccessToken(data?.data));
       session.updateSignup({ password: "", code: "" });
     },
   });
@@ -172,20 +191,21 @@ export function useResetPassword() {
     mutationFn: async (password: string) => {
       if (!api) return;
       await api.POST("/api/v1/auth/password/reset", {
-        body: { identifier: session.flow.identifier, code: session.flow.code, password },
+        body: {
+          identifier: identifierForApi(session.flow.identifier),
+          code: session.flow.code,
+          password,
+        },
       });
     },
   });
 }
 
-function deviceName(): string | null {
-  return Device.deviceName ?? Device.modelName ?? null;
+function toAuthStep(step: string): AuthStep {
+  return step === "totp" || step === "mfa_setup" ? step : "code";
 }
 
-export const useSignedOutEverywhere = () => {
-  const session = useSession();
-  return useMutation({ mutationFn: () => session.signOutEverywhere() });
-};
+export { useRecoveryRequest, useRegisterParent } from "./account";
 
 export const isLockedError = (error: unknown): boolean =>
   error instanceof ApiError && error.code === "SIGN_IN_LOCKED";

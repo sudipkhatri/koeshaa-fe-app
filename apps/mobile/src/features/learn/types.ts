@@ -9,6 +9,8 @@ export interface Chapter {
   /** Zero-based position in the subject. */
   index: number;
   name: Bilingual;
+  /** Free-slice chapter id. Demo chapters omit it. */
+  chapterId?: string;
 }
 
 export interface Subject {

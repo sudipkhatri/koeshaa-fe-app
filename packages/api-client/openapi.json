@@ -692,13 +692,13 @@
         "tags": [
           "enrollment"
         ],
-        "summary": "Edit my name or date of birth",
+        "summary": "Edit my language, name or date of birth",
         "operationId": "update_profile_api_v1_me_patch",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProfilePatch"
+                "$ref": "#/components/schemas/MeUpdate"
               }
             }
           },
@@ -2573,6 +2573,82 @@
         }
       }
     },
+    "/api/v1/me/study-preferences": {
+      "put": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Change my study preferences (data saver)",
+        "operationId": "change_study_preferences_api_v1_me_study_preferences_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudyPreferencesIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse_MeSettingsRead_"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid or expired token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/me/enrollments": {
       "get": {
         "tags": [
@@ -3449,6 +3525,98 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResponse_ChangeRequestRead_"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid or expired token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me/search": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search a course",
+        "operationId": "search_course_api_v1_me_search_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 64,
+              "title": "Q"
+            }
+          },
+          {
+            "name": "course_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+              "examples": [
+                "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+              ],
+              "title": "Course Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse_SearchRead_"
                 }
               }
             }
@@ -7449,6 +7617,74 @@
         }
       }
     },
+    "/api/v1/catalog/grade-levels/{grade}/free-slice": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Free chapters of a class that anyone can try without an account",
+        "operationId": "grade_level_free_slice_api_v1_catalog_grade_levels__grade__free_slice_get",
+        "parameters": [
+          {
+            "name": "grade",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Grade"
+            }
+          },
+          {
+            "name": "stream",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Stream"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse_FreeSliceRead_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/curriculum/grade-levels": {
       "get": {
         "tags": [
@@ -8597,6 +8833,265 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResponse_SchoolLeadRead_"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid or expired token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/settings": {
+      "get": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Platform settings",
+        "operationId": "list_settings_api_v1_admin_settings_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse_list_SettingRead__"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid or expired token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/settings/{key}": {
+      "put": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Change a platform setting",
+        "operationId": "update_setting_api_v1_admin_settings__key__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse_SettingRead_"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid or expired token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/settings/{key}/history": {
+      "get": {
+        "tags": [
+          "settings"
+        ],
+        "summary": "Who changed a setting, when, from what to what",
+        "operationId": "setting_history_api_v1_admin_settings__key__history_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Key"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse_list_SettingChangeRead__"
                 }
               }
             }
@@ -14036,6 +14531,27 @@
         ],
         "title": "ApiResponse[EnrollmentsRead]"
       },
+      "ApiResponse_FreeSliceRead_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "title": "Success",
+            "default": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/FreeSliceRead"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "ApiResponse[FreeSliceRead]"
+      },
       "ApiResponse_GuardianshipRead_": {
         "properties": {
           "success": {
@@ -14119,6 +14635,27 @@
           "data"
         ],
         "title": "ApiResponse[MeRead]"
+      },
+      "ApiResponse_MeSettingsRead_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "title": "Success",
+            "default": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/MeSettingsRead"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "ApiResponse[MeSettingsRead]"
       },
       "ApiResponse_MemberRead_": {
         "properties": {
@@ -14435,6 +14972,27 @@
         ],
         "title": "ApiResponse[SchoolLeadReceipt]"
       },
+      "ApiResponse_SearchRead_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "title": "Success",
+            "default": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SearchRead"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "ApiResponse[SearchRead]"
+      },
       "ApiResponse_ServiceStatus_": {
         "properties": {
           "success": {
@@ -14455,6 +15013,27 @@
           "data"
         ],
         "title": "ApiResponse[ServiceStatus]"
+      },
+      "ApiResponse_SettingRead_": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "title": "Success",
+            "default": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SettingRead"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "ApiResponse[SettingRead]"
       },
       "ApiResponse_SignInRead_": {
         "properties": {
@@ -15340,6 +15919,56 @@
           "data"
         ],
         "title": "ApiResponse[list[SchoolLeadRead]]"
+      },
+      "ApiResponse_list_SettingChangeRead__": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "title": "Success",
+            "default": true
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/SettingChangeRead"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "ApiResponse[list[SettingChangeRead]]"
+      },
+      "ApiResponse_list_SettingRead__": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "title": "Success",
+            "default": true
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/SettingRead"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "ApiResponse[list[SettingRead]]"
       },
       "ApiResponse_list_StreamRead__": {
         "properties": {
@@ -17694,6 +18323,109 @@
         ],
         "title": "FolderCreate"
       },
+      "FreeSliceChapterRead": {
+        "properties": {
+          "chapter_id": {
+            "type": "string",
+            "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+            "title": "Chapter Id",
+            "examples": [
+              "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+            ]
+          },
+          "number": {
+            "type": "integer",
+            "title": "Number"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "chapter_id",
+          "number",
+          "name"
+        ],
+        "title": "FreeSliceChapterRead"
+      },
+      "FreeSliceRead": {
+        "properties": {
+          "grade_level_id": {
+            "type": "string",
+            "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+            "title": "Grade Level Id",
+            "examples": [
+              "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+            ]
+          },
+          "stream_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+                "examples": [
+                  "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stream Id"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/FreeSliceSubjectRead"
+            },
+            "type": "array",
+            "title": "Subjects"
+          }
+        },
+        "type": "object",
+        "required": [
+          "grade_level_id",
+          "stream_id",
+          "subjects"
+        ],
+        "title": "FreeSliceRead"
+      },
+      "FreeSliceSubjectRead": {
+        "properties": {
+          "subject_id": {
+            "type": "string",
+            "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+            "title": "Subject Id",
+            "examples": [
+              "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+            ]
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "chapters": {
+            "items": {
+              "$ref": "#/components/schemas/FreeSliceChapterRead"
+            },
+            "type": "array",
+            "title": "Chapters"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subject_id",
+          "code",
+          "name",
+          "chapters"
+        ],
+        "title": "FreeSliceSubjectRead"
+      },
       "GradeLevelRead": {
         "properties": {
           "id": {
@@ -18149,6 +18881,14 @@
         ],
         "title": "LinkedChildRead"
       },
+      "Locale": {
+        "type": "string",
+        "enum": [
+          "en",
+          "ne"
+        ],
+        "title": "Locale"
+      },
       "MeRead": {
         "properties": {
           "user": {
@@ -18165,6 +18905,11 @@
             "type": "array",
             "title": "Missing Consents"
           },
+          "data_saver": {
+            "type": "boolean",
+            "title": "Data Saver",
+            "default": false
+          },
           "second_device_notice": {
             "type": "boolean",
             "title": "Second Device Notice",
@@ -18178,6 +18923,66 @@
           "missing_consents"
         ],
         "title": "MeRead"
+      },
+      "MeSettingsRead": {
+        "properties": {
+          "locale": {
+            "$ref": "#/components/schemas/Locale"
+          },
+          "data_saver": {
+            "type": "boolean",
+            "title": "Data Saver"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locale",
+          "data_saver"
+        ],
+        "title": "MeSettingsRead"
+      },
+      "MeUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "date_of_birth": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Of Birth"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Locale"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Language the app shows: en or ne"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "MeUpdate"
       },
       "MemberAdd": {
         "properties": {
@@ -20421,6 +21226,18 @@
             ],
             "title": "Assigned To"
           },
+          "assigned_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assigned Name",
+            "description": "Current name of the staff user in assigned_to. Null when unassigned."
+          },
           "organisation_id": {
             "anyOf": [
               {
@@ -20593,6 +21410,156 @@
         ],
         "title": "ScopeKind"
       },
+      "SearchKind": {
+        "type": "string",
+        "enum": [
+          "chapter",
+          "topic",
+          "concept",
+          "idea",
+          "question"
+        ],
+        "title": "SearchKind"
+      },
+      "SearchRead": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "corrected_from": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrected From"
+          },
+          "corrected_to": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrected To"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query",
+          "results"
+        ],
+        "title": "SearchRead"
+      },
+      "SearchResult": {
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/SearchKind"
+          },
+          "ref_id": {
+            "type": "string",
+            "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+            "title": "Ref Id",
+            "examples": [
+              "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+            ]
+          },
+          "chapter_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+                "examples": [
+                  "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chapter Id"
+          },
+          "chapter_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chapter Title"
+          },
+          "topic_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+                "examples": [
+                  "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Topic Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "title_highlights": {
+            "items": {
+              "$ref": "#/components/schemas/Span"
+            },
+            "type": "array",
+            "title": "Title Highlights"
+          },
+          "snippet": {
+            "type": "string",
+            "title": "Snippet"
+          },
+          "snippet_highlights": {
+            "items": {
+              "$ref": "#/components/schemas/Span"
+            },
+            "type": "array",
+            "title": "Snippet Highlights"
+          },
+          "in_free_slice": {
+            "type": "boolean",
+            "title": "In Free Slice"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "ref_id",
+          "chapter_id",
+          "chapter_title",
+          "topic_id",
+          "title",
+          "title_highlights",
+          "snippet",
+          "snippet_highlights",
+          "in_free_slice"
+        ],
+        "title": "SearchResult"
+      },
       "ServiceStatus": {
         "properties": {
           "status": {
@@ -20605,6 +21572,151 @@
           "status"
         ],
         "title": "ServiceStatus"
+      },
+      "SettingChangeRead": {
+        "properties": {
+          "changed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Changed At"
+          },
+          "changed_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+                "examples": [
+                  "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Changed By"
+          },
+          "changed_by_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Changed By Role"
+          },
+          "old_value": {
+            "type": "integer",
+            "title": "Old Value"
+          },
+          "new_value": {
+            "type": "integer",
+            "title": "New Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "changed_at",
+          "changed_by",
+          "changed_by_role",
+          "old_value",
+          "new_value"
+        ],
+        "title": "SettingChangeRead"
+      },
+      "SettingRead": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "value": {
+            "type": "integer",
+            "title": "Value"
+          },
+          "default": {
+            "type": "integer",
+            "title": "Default"
+          },
+          "minimum": {
+            "type": "integer",
+            "title": "Minimum"
+          },
+          "maximum": {
+            "type": "integer",
+            "title": "Maximum"
+          },
+          "scope": {
+            "type": "string",
+            "const": "platform",
+            "title": "Scope",
+            "default": "platform"
+          },
+          "is_default": {
+            "type": "boolean",
+            "title": "Is Default",
+            "description": "True while no one has changed it from the default"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+                "examples": [
+                  "01J9Z8Y7X6W5V4T3S2R1Q0P9N8"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By",
+            "description": "Account of the last change"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "description",
+          "value",
+          "default",
+          "minimum",
+          "maximum",
+          "is_default"
+        ],
+        "title": "SettingRead"
+      },
+      "SettingUpdate": {
+        "properties": {
+          "value": {
+            "type": "integer",
+            "title": "Value",
+            "description": "Whole number inside the setting's range"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "title": "SettingUpdate"
       },
       "SignInIn": {
         "properties": {
@@ -20764,6 +21876,19 @@
         "title": "SitePageRead",
         "description": "`locale` is the language of the text returned, which is English when the asked-for\nlanguage has no published version."
       },
+      "Span": {
+        "prefixItems": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "integer"
+          }
+        ],
+        "type": "array",
+        "maxItems": 2,
+        "minItems": 2
+      },
       "StreamRead": {
         "properties": {
           "id": {
@@ -20856,6 +21981,21 @@
           "consents"
         ],
         "title": "StudentRegisterIn"
+      },
+      "StudyPreferencesIn": {
+        "properties": {
+          "data_saver": {
+            "type": "boolean",
+            "title": "Data Saver",
+            "description": "Use less mobile data"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "data_saver"
+        ],
+        "title": "StudyPreferencesIn"
       },
       "SubjectCreate": {
         "properties": {

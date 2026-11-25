@@ -7,8 +7,8 @@ import { buildMobileCss, buildWebTheme } from "./theme.ts";
 describe("theme builders", () => {
   it("defines every colour for light and dark", () => {
     expect(Object.keys(color.dark)).toEqual(Object.keys(color.light));
-    expect(buildMobileCss()).toContain("--color-primary: #4F46E5;");
-    expect(buildMobileCss()).toContain("--color-primary: #818CF8;");
+    expect(buildMobileCss()).toContain("--color-primary: #056B67;");
+    expect(buildMobileCss()).toContain("--color-primary: #0A7A74;");
     expect(buildWebTheme()).toContain("--color-subject-science: #047857;");
   });
 });

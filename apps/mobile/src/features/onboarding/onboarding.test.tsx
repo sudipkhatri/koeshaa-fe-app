@@ -53,7 +53,7 @@ describe("sign in", () => {
     await waitFor(() =>
       expect(routerMock.push).toHaveBeenCalledWith({
         pathname: "/onboarding/code",
-        params: { to: "+977 ••••", child: "1", next: "signed-in" },
+        params: { to: "+977 ••••", child: "1", next: "signed-in", step: "code" },
       }),
     );
   });

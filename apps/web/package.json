@@ -11,13 +11,19 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@hookform/resolvers": "^7.0.7",
     "@keoshaa/api-client": "*",
     "@keoshaa/core": "*",
     "@keoshaa/i18n": "*",
     "@keoshaa/tokens": "*",
-    "next": "16.4.0",
+    "@tanstack/react-query": "^5.108.1",
+    "nepali-date-converter": "^3.4.2",
+    "next": "16.4.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-hook-form": "^7.92.0",
+    "uqr": "^0.1.3",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
@@ -28,8 +34,9 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.1.2",
     "eslint": "^9.39.0",
-    "eslint-config-next": "16.4.0",
+    "eslint-config-next": "16.4.6",
     "jsdom": "^29.1.1",
+    "msw": "^2.15.0",
     "tailwindcss": "^4",
     "typescript": "~6.0.3",
     "vite-tsconfig-paths": "^6.1.1"
