@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/bibekdhakal/keoshaa-app:${IMAGE_TAG:-latest}
+    image: ghcr.io/sudipkhatri/koeshaa-fe-app:${IMAGE_TAG:-latest}
     container_name: keoshaa-web
     restart: unless-stopped
     environment:

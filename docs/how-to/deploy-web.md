@@ -88,4 +88,4 @@ PROD uses the same compose file and network pattern on the prod host; copy the D
 
 ## Image name
 
-Workflows push to `ghcr.io/<github-owner>/<repo>:<tag>` (lowercased). The VPS compose file currently expects `ghcr.io/bibekdhakal/keoshaa-app`. If the GitHub owner or repo name changes, update [`.docker/server/docker-compose.yaml`](../../.docker/server/docker-compose.yaml) to match.
+Workflows push to `ghcr.io/<github-owner>/<repo>:<tag>` (lowercased). The VPS compose file expects `ghcr.io/sudipkhatri/koeshaa-fe-app`. If the GitHub owner or repo name changes, update [`.docker/server/docker-compose.yaml`](../../.docker/server/docker-compose.yaml) to match.
